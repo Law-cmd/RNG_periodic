@@ -3,32 +3,43 @@
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
-      "Shared": {
-        "$path": "./",
-        "$include": [
-          "CraftingRecipes.luau",
-          "RNGConfig.luau",
-          "RNGSystem.luau"
-        ]
+      "$className": "ReplicatedStorage",
+      "CraftingRecipes": {
+        "$path": "CraftingRecipes.luau"
       },
-      "RemoteEvents": {
-        "$path": "RemoteEvents"
+      "RNGConfig": {
+        "$path": "RNGConfig.luau"
+      },
+      "RNGSystem": {
+        "$path": "RNGSystem.luau"
       }
     },
     "ServerScriptService": {
+      "$className": "ServerScriptService",
       "$path": "ServerScriptService"
     },
     "StarterPlayer": {
+      "$className": "StarterPlayer",
       "StarterPlayerScripts": {
-        "$path": "./",
-        "$include": [
-          "RNGClient.local.luau",
-          "EquipEffects.luau",
-          "RollEffects.luau",
-          "UIHandler.luau",
-          "MoneyDisplay.local.luau",
-          "EquipEffectsVisualizer.local.luau"
-        ]
+        "$className": "StarterPlayerScripts",
+        "RNGClient": {
+          "$path": "RNGClient.local.luau"
+        },
+        "MoneyDisplay": {
+          "$path": "MoneyDisplay.local.luau"
+        },
+        "EquipEffectsVisualizer": {
+          "$path": "EquipEffectsVisualizer.local.luau"
+        },
+        "UIHandler": {
+          "$path": "UIHandler.luau"
+        },
+        "EquipEffects": {
+          "$path": "EquipEffects.luau"
+        },
+        "RollEffects": {
+          "$path": "RollEffects.luau"
+        }
       }
     }
   }
