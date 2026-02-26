@@ -1,0 +1,35 @@
+{
+  "name": "RNG_Periodic",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "Shared": {
+        "$path": "./",
+        "$include": [
+          "CraftingRecipes.luau",
+          "RNGConfig.luau",
+          "RNGSystem.luau"
+        ]
+      },
+      "RemoteEvents": {
+        "$path": "RemoteEvents"
+      }
+    },
+    "ServerScriptService": {
+      "$path": "ServerScriptService"
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "$path": "./",
+        "$include": [
+          "RNGClient.local.luau",
+          "EquipEffects.luau",
+          "RollEffects.luau",
+          "UIHandler.luau",
+          "MoneyDisplay.local.luau",
+          "EquipEffectsVisualizer.local.luau"
+        ]
+      }
+    }
+  }
+}
