@@ -24,7 +24,7 @@ end
 
 local PlayerDataManager = require(game.ServerScriptService:WaitForChild("PlayerDataManager"))
 
--- Store placed item models per pedestal
+-- Store placed item models per pedestal so we can clear them when replaced
 local placedItems = {}
 
 -- Rarity color table
@@ -40,7 +40,7 @@ local rarityColors = {
 	Celestial = Color3.fromRGB(150, 100, 255),
 }
 
--- Build a visual model for the placed item
+-- Builds the visual 3D item. Ensures it has a PrimaryPart for pivoting.
 local function createItemDisplay(itemName, itemRarity)
 	local displayModel = Instance.new("Model")
 	displayModel.Name = itemName .. "_Display"
@@ -50,7 +50,7 @@ local function createItemDisplay(itemName, itemRarity)
 	basePart.Anchored = true
 	basePart.CanCollide = false
 
-	-- Shape based on item type
+	-- Determine geometric shape based on item name keywords
 	if itemName:find("Steel") or itemName:find("Bronze") or itemName:find("Alloy") or itemName:find("Metal") or itemName == "Iron" or itemName == "Copper" then
 		basePart.Shape    = Enum.PartType.Block
 		basePart.Size     = Vector3.new(2.5, 1, 1.2)
@@ -69,18 +69,21 @@ local function createItemDisplay(itemName, itemRarity)
 
 	basePart.Color  = rarityColors[itemRarity] or rarityColors.Common
 	basePart.Parent = displayModel
+	
+	-- Critical fix: Set PrimaryPart so :PivotTo() works perfectly
+	displayModel.PrimaryPart = basePart
 
-	-- Glow
+	-- Glow effect
 	local light = Instance.new("PointLight")
 	light.Color      = basePart.Color
 	light.Brightness = 3
 	light.Range      = 10
 	light.Parent     = basePart
 
-	-- Billboard label
+	-- Billboard GUI for item name
 	local billboard = Instance.new("BillboardGui")
 	billboard.Size         = UDim2.new(5, 0, 1.2, 0)
-	billboard.StudsOffset  = Vector3.new(0, 4, 0)
+	billboard.StudsOffset  = Vector3.new(0, 3, 0)
 	billboard.AlwaysOnTop  = true
 	billboard.Adornee      = basePart
 	billboard.Parent       = displayModel
@@ -94,7 +97,7 @@ local function createItemDisplay(itemName, itemRarity)
 	label.Font               = Enum.Font.GothamBold
 	label.Parent             = billboard
 
-	-- Particles
+	-- Particle effect
 	local att = Instance.new("Attachment", basePart)
 	local particles = Instance.new("ParticleEmitter", att)
 	particles.Color       = ColorSequence.new(basePart.Color)
@@ -103,10 +106,11 @@ local function createItemDisplay(itemName, itemRarity)
 	particles.Rate        = 20
 	particles.Speed       = NumberRange.new(1, 3)
 	particles.SpreadAngle = Vector2.new(180, 180)
+	particles.Parent      = att
 
-	-- Spin animation
+	-- Simple continuous rotation handled by the server
 	task.spawn(function()
-		while basePart.Parent do
+		while basePart and basePart.Parent do
 			basePart.CFrame = basePart.CFrame * CFrame.Angles(0, math.rad(1), 0)
 			task.wait()
 		end
@@ -115,72 +119,77 @@ local function createItemDisplay(itemName, itemRarity)
 	return displayModel
 end
 
--- Place an item on a pedestal (called when player picks from the UI)
+-- Core placement logic, completely rewritten for safety
 local function placeItemOnPedestal(player, itemStand, itemName)
+	-- 1. Validate the Pedestal exists and has a spawn point
+	if not itemStand or not itemStand:IsA("Model") then
+		warn("[Pedestal] Invalid itemStand passed by", player.Name)
+		return
+	end
+
+	local equipmentSpawner = itemStand:FindFirstChild("EquipmentSpawner")
+	if not equipmentSpawner or not equipmentSpawner:IsA("BasePart") then
+		warn("[Pedestal] ItemStand", itemStand.Name, "is missing 'EquipmentSpawner' BasePart.")
+		return
+	end
+
+	-- 2. Verify Player Inventory & Ownership
 	local inventory = PlayerDataManager.GetInventory(player)
 	if not inventory then
-		return {success = false, message = "Could not load inventory!"}
+		warn("[Pedestal] Could not load inventory for", player.Name)
+		return
 	end
 
 	local itemRarity = "Common"
 	local hasItem = false
 
 	for _, item in ipairs(inventory) do
-		if item.ItemName == itemName then
-			if not item.IsCrafted then
-				return {success = false, message = "Only crafted items can be placed here!"}
-			end
-			hasItem    = true
+		if item.ItemName == itemName and item.IsCrafted then
+			hasItem = true
 			itemRarity = item.Rarity or "Common"
 			break
 		end
 	end
 
 	if not hasItem then
-		return {success = false, message = "You don't have this crafted item!"}
-	end
-
-	local equipmentSpawner = itemStand:FindFirstChild("EquipmentSpawner")
-	if not equipmentSpawner then
-		return {success = false, message = "EquipmentSpawner not found inside Item Stand!"}
-	end
-
-	-- Remove old display
-	if placedItems[itemStand] then
-		placedItems[itemStand]:Destroy()
-	end
-
-	-- Place new display
-	local display = createItemDisplay(itemName, itemRarity)
-	display:PivotTo(equipmentSpawner.CFrame * CFrame.new(0, 3, 0))
-	display.Parent = itemStand
-	placedItems[itemStand] = display
-
-	print("[PedestalPlacementSystem] Placed", itemName, "on", itemStand.Name)
-	return {success = true, message = "Placed " .. itemName}
-end
-
--- Listen for the client selection event
-PlaceItemEvent.OnServerEvent:Connect(function(player, itemStand, itemName)
-	if not itemStand or not itemName then return end
-	placeItemOnPedestal(player, itemStand, itemName)
-end)
-
--- Attach ProximityPrompt to every "Item Stand" in the workspace
-local function setupPedestal(model)
-	if not model:IsA("Model") then return end
-	if model.Name ~= "Item Stand" then return end
-
-	-- Find a part to attach to
-	local part = model:FindFirstChild("EquipmentSpawner")
-		or model:FindFirstChild("MainPart")
-		or model:FindFirstChildWhichIsA("BasePart")
-	if not part then
-		warn("[PedestalPlacementSystem] No base part found in", model.Name)
+		warn("[Pedestal]", player.Name, "attempted to place", itemName, "but doesn't own a crafted version.")
 		return
 	end
 
-	-- Avoid duplicate prompts
+	-- 3. Clear Existing Item
+	if placedItems[itemStand] then
+		placedItems[itemStand]:Destroy()
+		placedItems[itemStand] = nil
+	end
+
+	-- 4. Create and Position New Item
+	local display = createItemDisplay(itemName, itemRarity)
+	
+	-- We use PivotTo now that PrimaryPart is guaranteed to be set
+	-- Float it exactly 3 studs above the spawner's center point
+	display:PivotTo(equipmentSpawner.CFrame * CFrame.new(0, 3, 0))
+	display.Parent = itemStand
+	
+	-- Store reference
+	placedItems[itemStand] = display
+
+	print("[Pedestal] Successfully placed", itemName, "on", itemStand.Name, "by", player.Name)
+end
+
+-- Network Reception
+PlaceItemEvent.OnServerEvent:Connect(function(player, itemStand, itemName)
+	placeItemOnPedestal(player, itemStand, itemName)
+end)
+
+-- Prompt Setup Function
+local function setupPedestal(model)
+	if not model:IsA("Model") or model.Name ~= "Item Stand" then return end
+
+	local part = model:FindFirstChild("EquipmentSpawner") 
+		or model:FindFirstChild("MainPart") 
+		or model:FindFirstChildWhichIsA("BasePart")
+		
+	if not part then return end
 	if part:FindFirstChild("PedestalPrompt") then return end
 
 	local prompt = Instance.new("ProximityPrompt")
@@ -188,6 +197,8 @@ local function setupPedestal(model)
 	prompt.ActionText   = "Manage Pedestal"
 	prompt.ObjectText   = "Item Stand"
 	prompt.HoldDuration = 0.5
+	prompt.RequiresLineOfSight = false
+	prompt.MaxActivationDistance = 10
 	prompt.Parent       = part
 
 	prompt.Triggered:Connect(function(player)
@@ -195,13 +206,15 @@ local function setupPedestal(model)
 			local inventory = PlayerDataManager.GetInventory(player)
 			local craftedItems = {}
 
-			for _, item in ipairs(inventory) do
-				if item.IsCrafted then
-					table.insert(craftedItems, item)
+			if inventory then
+				for _, item in ipairs(inventory) do
+					if item.IsCrafted then
+						table.insert(craftedItems, item)
+					end
 				end
 			end
 
-			print("[PedestalPlacementSystem] Found", #craftedItems, "crafted items for", player.Name)
+			-- Always fire so UI opens, even if empty
 			OpenPedestalSelectionEvent:FireClient(player, model, craftedItems)
 		end)
 
@@ -209,14 +222,12 @@ local function setupPedestal(model)
 			warn("[PedestalPlacementSystem] Trigger error:", err)
 		end
 	end)
-
-	print("[PedestalPlacementSystem] Set up prompt on", model.Name)
 end
 
--- Run on all existing workspace descendants (catches pedestals inside folders/models)
+-- Initialize existing pedestals + future ones (handling nested pedestals gracefully)
 for _, desc in ipairs(workspace:GetDescendants()) do
 	setupPedestal(desc)
 end
 workspace.DescendantAdded:Connect(setupPedestal)
 
-print("[PedestalPlacementSystem] Initialized")
+print("[PedestalPlacementSystem] Completely Rewritten & Initialized")
