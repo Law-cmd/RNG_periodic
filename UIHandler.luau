@@ -790,7 +790,7 @@ function UIHandler.CreatePedestalSelectionUI(playerGui, craftedItems, itemStand)
 		rarityLabel.Parent = itemButton
 
 		itemButton.MouseButton1Click:Connect(function()
-			local PlaceItemEvent = ReplicatedStorage.RemoteEvents:FindFirstChild("PlaceItemOnPedestal")
+			local PlaceItemEvent = ReplicatedStorage.RemoteEvents:WaitForChild("PlaceItemOnPedestal")
 			if PlaceItemEvent then
 				PlaceItemEvent:FireServer(itemStand, item.ItemName)
 			end

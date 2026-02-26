@@ -5,7 +5,14 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
 local RemoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
-local PlaceItemEvent = RemoteEvents:WaitForChild("PlaceItemOnPedestal")
+
+-- Create or reuse PlaceItemOnPedestal event
+local PlaceItemEvent = RemoteEvents:FindFirstChild("PlaceItemOnPedestal")
+if not PlaceItemEvent then
+	PlaceItemEvent = Instance.new("RemoteEvent")
+	PlaceItemEvent.Name = "PlaceItemOnPedestal"
+	PlaceItemEvent.Parent = RemoteEvents
+end
 
 -- Create or reuse OpenPedestalSelection event
 local OpenPedestalSelectionEvent = RemoteEvents:FindFirstChild("OpenPedestalSelection")
@@ -206,10 +213,10 @@ local function setupPedestal(model)
 	print("[PedestalPlacementSystem] Set up prompt on", model.Name)
 end
 
--- Run on all existing workspace children
-for _, child in ipairs(workspace:GetChildren()) do
-	setupPedestal(child)
+-- Run on all existing workspace descendants (catches pedestals inside folders/models)
+for _, desc in ipairs(workspace:GetDescendants()) do
+	setupPedestal(desc)
 end
-workspace.ChildAdded:Connect(setupPedestal)
+workspace.DescendantAdded:Connect(setupPedestal)
 
 print("[PedestalPlacementSystem] Initialized")

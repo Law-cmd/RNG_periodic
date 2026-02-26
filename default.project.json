@@ -6,9 +6,7 @@
       "$className": "ReplicatedStorage",
       "CraftingRecipes": {
         "$path": "CraftingRecipes.luau"
-      },
-      "RNGConfig": {
-        "$path": "RNGConfig.luau"
+
       },
       "RNGSystem": {
         "$path": "RNGSystem.luau"
