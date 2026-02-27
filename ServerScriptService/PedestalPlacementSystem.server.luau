@@ -189,8 +189,13 @@ local function setupPedestal(model)
 		or model:FindFirstChild("MainPart") 
 		or model:FindFirstChildWhichIsA("BasePart")
 		
-	if not part then return end
+	if not part then
+		warn("[PedestalPlacementSystem] No suitable part found in", model:GetFullName(), "to attach prompt.")
+		return 
+	end
 	if part:FindFirstChild("PedestalPrompt") then return end
+
+	print("[PedestalPlacementSystem] Creating prompt for", model:GetFullName(), "on part", part.Name)
 
 	local prompt = Instance.new("ProximityPrompt")
 	prompt.Name         = "PedestalPrompt"
@@ -203,6 +208,7 @@ local function setupPedestal(model)
 
 	prompt.Triggered:Connect(function(player)
 		local ok, err = pcall(function()
+			print("[PedestalPlacementSystem] Prompt triggered by", player.Name)
 			local inventory = PlayerDataManager.GetInventory(player)
 			local craftedItems = {}
 
@@ -215,6 +221,7 @@ local function setupPedestal(model)
 			end
 
 			-- Always fire so UI opens, even if empty
+			print("[PedestalPlacementSystem] Firing OpenPedestalSelection event to client with", #craftedItems, "items")
 			OpenPedestalSelectionEvent:FireClient(player, model, craftedItems)
 		end)
 

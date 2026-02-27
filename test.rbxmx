@@ -1,0 +1,5103 @@
+<roblox version="4">
+  <Item class="DataModel" referent="0">
+    <Properties>
+      <string name="Name">RNG_Periodic</string>
+    </Properties>
+    <Item class="ReplicatedStorage" referent="1">
+      <Properties>
+        <string name="Name">ReplicatedStorage</string>
+      </Properties>
+      <Item class="ModuleScript" referent="2">
+        <Properties>
+          <string name="Name">CraftingRecipes</string>
+          <string name="Source">--[[
+	Crafting Recipes Module
+	Defines all craftable items and their ingredient requirements
+]]
+
+local CraftingRecipes = {}
+
+-- All crafting recipes
+CraftingRecipes.Recipes = {
+	-- Common tier crafts
+	{
+		Result = {
+			Name = "Steel",
+			Rarity = "Uncommon",
+			Description = "Strong alloy of iron and carbon\n\n⚡ Roll Speed: +10%\n🍀 Luck: x1.2"
+		},
+		Ingredients = {
+			{Name = "Iron", Rarity = "Uncommon", Quantity = 2},
+			{Name = "Carbon", Rarity = "Common", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Bronze",
+			Rarity = "Uncommon",
+			Description = "Copper and tin alloy\n\n⚡ Roll Speed: +10%\n🍀 Luck: x1.2"
+		},
+		Ingredients = {
+			{Name = "Copper", Rarity = "Uncommon", Quantity = 2},
+			{Name = "Tin", Rarity = "Common", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Water",
+			Rarity = "Common",
+			Description = "Essential compound of life\n\n⚡ Roll Speed: +5%\n🍀 Luck: x1.1"
+		},
+		Ingredients = {
+			{Name = "Hydrogen", Rarity = "Common", Quantity = 2},
+			{Name = "Oxygen", Rarity = "Common", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Ammonia",
+			Rarity = "Uncommon",
+			Description = "Important industrial chemical\n\n⚡ Roll Speed: +10%\n🍀 Luck: x1.2"
+		},
+		Ingredients = {
+			{Name = "Nitrogen", Rarity = "Common", Quantity = 1},
+			{Name = "Hydrogen", Rarity = "Common", Quantity = 3}
+		}
+	},
+	{
+		Result = {
+			Name = "Salt",
+			Rarity = "Common",
+			Description = "Essential seasoning\n\n⚡ Roll Speed: +5%\n🍀 Luck: x1.1"
+		},
+		Ingredients = {
+			{Name = "Sodium", Rarity = "Common", Quantity = 1},
+			{Name = "Chlorine", Rarity = "Common", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Methane",
+			Rarity = "Common",
+			Description = "Simple hydrocarbon\n\n⚡ Roll Speed: +5%\n🍀 Luck: x1.1"
+		},
+		Ingredients = {
+			{Name = "Carbon", Rarity = "Common", Quantity = 1},
+			{Name = "Hydrogen", Rarity = "Common", Quantity = 4}
+		}
+	},
+	{
+		Result = {
+			Name = "Silica",
+			Rarity = "Common",
+			Description = "Sand and glass base\n\n⚡ Roll Speed: +5%\n🍀 Luck: x1.1"
+		},
+		Ingredients = {
+			{Name = "Silicon", Rarity = "Common", Quantity = 1},
+			{Name = "Oxygen", Rarity = "Common", Quantity = 2}
+		}
+	},
+	-- Rare tier crafts
+	{
+		Result = {
+			Name = "Sterling Silver",
+			Rarity = "Rare",
+			Description = "Beautiful silver alloy\n\n⚡ Roll Speed: +15%\n🍀 Luck: x1.3"
+		},
+		Ingredients = {
+			{Name = "Silver", Rarity = "Rare", Quantity = 2},
+			{Name = "Copper", Rarity = "Uncommon", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Titanium Alloy",
+			Rarity = "Rare",
+			Description = "Aerospace-grade material\n\n⚡ Roll Speed: +15%\n🍀 Luck: x1.3"
+		},
+		Ingredients = {
+			{Name = "Titanium", Rarity = "Rare", Quantity = 2},
+			{Name = "Aluminum", Rarity = "Uncommon", Quantity = 1},
+			{Name = "Vanadium", Rarity = "Uncommon", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Stainless Steel",
+			Rarity = "Rare",
+			Description = "Corrosion-resistant steel\n\n⚡ Roll Speed: +15%\n🍀 Luck: x1.3"
+		},
+		Ingredients = {
+			{Name = "Iron", Rarity = "Uncommon", Quantity = 3},
+			{Name = "Chromium", Rarity = "Rare", Quantity = 1},
+			{Name = "Nickel", Rarity = "Rare", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Mithril Alloy",
+			Rarity = "Rare",
+			Description = "Elven metal enhanced\n\n⚡ Roll Speed: +15%\n🍀 Luck: x1.3"
+		},
+		Ingredients = {
+			{Name = "Mithril", Rarity = "Rare", Quantity = 2},
+			{Name = "Silver", Rarity = "Rare", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Vibranium Steel",
+			Rarity = "Rare",
+			Description = "Energy-absorbing alloy\n\n⚡ Roll Speed: +15%\n🍀 Luck: x1.3"
+		},
+		Ingredients = {
+			{Name = "Vibranium", Rarity = "Rare", Quantity = 1},
+			{Name = "Iron", Rarity = "Uncommon", Quantity = 2}
+		}
+	},
+	{
+		Result = {
+			Name = "Crystal Blade",
+			Rarity = "Rare",
+			Description = "Gem-infused weapon\n\n⚡ Roll Speed: +15%\n🍀 Luck: x1.3"
+		},
+		Ingredients = {
+			{Name = "Crystal Steel", Rarity = "Rare", Quantity = 1},
+			{Name = "Diamond", Rarity = "Epic", Quantity = 1}
+		}
+	},
+	-- Epic tier crafts
+	{
+		Result = {
+			Name = "White Gold",
+			Rarity = "Epic",
+			Description = "Luxurious gold alloy\n\n⚡ Roll Speed: +20%\n🍀 Luck: x1.5"
+		},
+		Ingredients = {
+			{Name = "Gold", Rarity = "Epic", Quantity = 2},
+			{Name = "Palladium", Rarity = "Epic", Quantity = 1},
+			{Name = "Silver", Rarity = "Rare", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Platinum Alloy",
+			Rarity = "Epic",
+			Description = "Ultra-durable precious metal\n\n⚡ Roll Speed: +20%\n🍀 Luck: x1.5"
+		},
+		Ingredients = {
+			{Name = "Platinum", Rarity = "Epic", Quantity = 2},
+			{Name = "Rhodium", Rarity = "Epic", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Uru Hammer",
+			Rarity = "Epic",
+			Description = "Asgardian weapon\n\n⚡ Roll Speed: +20%\n🍀 Luck: x1.5"
+		},
+		Ingredients = {
+			{Name = "Uru", Rarity = "Epic", Quantity = 2},
+			{Name = "Storm Silver", Rarity = "Rare", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Beskar Armor",
+			Rarity = "Epic",
+			Description = "Mandalorian protection\n\n⚡ Roll Speed: +20%\n🍀 Luck: x1.5"
+		},
+		Ingredients = {
+			{Name = "Beskar", Rarity = "Epic", Quantity = 2},
+			{Name = "Titanium", Rarity = "Rare", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Gemstone Array",
+			Rarity = "Epic",
+			Description = "Combined gem power\n\n⚡ Roll Speed: +20%\n🍀 Luck: x1.5"
+		},
+		Ingredients = {
+			{Name = "Diamond", Rarity = "Epic", Quantity = 1},
+			{Name = "Ruby", Rarity = "Epic", Quantity = 1},
+			{Name = "Sapphire", Rarity = "Epic", Quantity = 1}
+		}
+	},
+	-- Legendary tier crafts
+	{
+		Result = {
+			Name = "Enriched Uranium",
+			Rarity = "Legendary",
+			Description = "Highly radioactive fuel\n\n⚡ Roll Speed: +25%\n🍀 Luck: x1.8"
+		},
+		Ingredients = {
+			{Name = "Uranium", Rarity = "Legendary", Quantity = 2},
+			{Name = "Plutonium", Rarity = "Legendary", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Radium Glow",
+			Rarity = "Legendary",
+			Description = "Permanently glowing material\n\n⚡ Roll Speed: +25%\n🍀 Luck: x1.8"
+		},
+		Ingredients = {
+			{Name = "Radium", Rarity = "Legendary", Quantity = 2},
+			{Name = "Phosphorus", Rarity = "Uncommon", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Time Loop",
+			Rarity = "Legendary",
+			Description = "Temporal manipulation\n\n⚡ Roll Speed: +25%\n🍀 Luck: x1.8"
+		},
+		Ingredients = {
+			{Name = "Chronium", Rarity = "Legendary", Quantity = 2},
+			{Name = "Time Crystal", Rarity = "Mythical", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Void Essence",
+			Rarity = "Legendary",
+			Description = "Pure nothingness\n\n⚡ Roll Speed: +25%\n🍀 Luck: x1.8"
+		},
+		Ingredients = {
+			{Name = "Void Metal", Rarity = "Legendary", Quantity = 2},
+			{Name = "Void Crystal", Rarity = "Mythical", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Dragonfire",
+			Rarity = "Legendary",
+			Description = "Eternal flame\n\n⚡ Roll Speed: +25%\n🍀 Luck: x1.8"
+		},
+		Ingredients = {
+			{Name = "Dragonsteel", Rarity = "Legendary", Quantity = 2},
+			{Name = "Phoenix Iron", Rarity = "Legendary", Quantity = 1}
+		}
+	},
+	-- Mythical tier crafts
+	{
+		Result = {
+			Name = "Superheavy Fusion",
+			Rarity = "Mythical",
+			Description = "Fusion of rarest elements\n\n⚡ Roll Speed: +30%\n🍀 Luck: x2.0"
+		},
+		Ingredients = {
+			{Name = "Francium", Rarity = "Mythical", Quantity = 1},
+			{Name = "Astatine", Rarity = "Mythical", Quantity = 1},
+			{Name = "Californium", Rarity = "Mythical", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Einsteinium Compound",
+			Rarity = "Mythical",
+			Description = "Named after genius\n\n⚡ Roll Speed: +30%\n🍀 Luck: x2.0"
+		},
+		Ingredients = {
+			{Name = "Einsteinium", Rarity = "Mythical", Quantity = 2},
+			{Name = "Uranium", Rarity = "Legendary", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Reality Bender",
+			Rarity = "Mythical",
+			Description = "Warp existence itself\n\n⚡ Roll Speed: +30%\n🍀 Luck: x2.0"
+		},
+		Ingredients = {
+			{Name = "Infinity Stone", Rarity = "Mythical", Quantity = 1},
+			{Name = "Reality Shard", Rarity = "Mythical", Quantity = 2}
+		}
+	},
+	{
+		Result = {
+			Name = "Dream Weaver",
+			Rarity = "Mythical",
+			Description = "Control dreams\n\n⚡ Roll Speed: +30%\n🍀 Luck: x2.0"
+		},
+		Ingredients = {
+			{Name = "Dream Essence", Rarity = "Mythical", Quantity = 2},
+			{Name = "Nightmare Fuel", Rarity = "Mythical", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Balance Keeper",
+			Rarity = "Mythical",
+			Description = "Perfect harmony\n\n⚡ Roll Speed: +30%\n🍀 Luck: x2.0"
+		},
+		Ingredients = {
+			{Name = "Chaos Energy", Rarity = "Mythical", Quantity = 1},
+			{Name = "Order Crystal", Rarity = "Mythical", Quantity = 1}
+		}
+	},
+	-- Divine tier crafts
+	{
+		Result = {
+			Name = "Island of Stability",
+			Rarity = "Divine",
+			Description = "Theoretical stable superheavy element\n\n⚡ Roll Speed: +40%\n🍀 Luck: x2.5"
+		},
+		Ingredients = {
+			{Name = "Oganesson", Rarity = "Divine", Quantity = 1},
+			{Name = "Tennessine", Rarity = "Divine", Quantity = 1},
+			{Name = "Moscovium", Rarity = "Divine", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Elemental Core",
+			Rarity = "Divine",
+			Description = "Pure element power\n\n⚡ Roll Speed: +40%\n🍀 Luck: x2.5"
+		},
+		Ingredients = {
+			{Name = "Ununennium", Rarity = "Divine", Quantity = 2},
+			{Name = "Unbinilium", Rarity = "Divine", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Transmutation",
+			Rarity = "Divine",
+			Description = "Change anything\n\n⚡ Roll Speed: +40%\n🍀 Luck: x2.5"
+		},
+		Ingredients = {
+			{Name = "Philosopher's Stone", Rarity = "Mythical", Quantity = 1},
+			{Name = "Life Essence", Rarity = "Mythical", Quantity = 1},
+			{Name = "Death Essence", Rarity = "Mythical", Quantity = 1}
+		}
+	},
+	-- Exotic tier crafts
+	{
+		Result = {
+			Name = "Matter-Antimatter",
+			Rarity = "Exotic",
+			Description = "Perfect balance of opposites\n\n⚡ Roll Speed: +50%\n🍀 Luck: x3.0"
+		},
+		Ingredients = {
+			{Name = "Antimatter", Rarity = "Exotic", Quantity = 1},
+			{Name = "Ununennium", Rarity = "Exotic", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Quantum Field",
+			Rarity = "Exotic",
+			Description = "Manipulate probability\n\n⚡ Roll Speed: +50%\n🍀 Luck: x3.0"
+		},
+		Ingredients = {
+			{Name = "Quantium", Rarity = "Mythical", Quantity = 2},
+			{Name = "Bose-Einstein Condensate", Rarity = "Exotic", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Faster Than Light",
+			Rarity = "Exotic",
+			Description = "Break cosmic speed limit\n\n⚡ Roll Speed: +50%\n🍀 Luck: x3.0"
+		},
+		Ingredients = {
+			{Name = "Tachyon", Rarity = "Exotic", Quantity = 2},
+			{Name = "Wormhole", Rarity = "Celestial", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Mass Generator",
+			Rarity = "Exotic",
+			Description = "Create matter from nothing\n\n⚡ Roll Speed: +50%\n🍀 Luck: x3.0"
+		},
+		Ingredients = {
+			{Name = "Higgs Boson", Rarity = "Exotic", Quantity = 2},
+			{Name = "Vacuum Energy", Rarity = "Celestial", Quantity = 1}
+		}
+	},
+	-- Celestial tier crafts
+	{
+		Result = {
+			Name = "Cosmic Singularity",
+			Rarity = "Celestial",
+			Description = "Heart of a black hole\n\n⚡ Roll Speed: +60%\n🍀 Luck: x4.0"
+		},
+		Ingredients = {
+			{Name = "Dark Matter", Rarity = "Celestial", Quantity = 1},
+			{Name = "Neutronium", Rarity = "Celestial", Quantity = 1},
+			{Name = "Strange Matter", Rarity = "Celestial", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Universe Seed",
+			Rarity = "Celestial",
+			Description = "Create new realities\n\n⚡ Roll Speed: +60%\n🍀 Luck: x4.0"
+		},
+		Ingredients = {
+			{Name = "Singularity", Rarity = "Celestial", Quantity = 1},
+			{Name = "Cosmium", Rarity = "Mythical", Quantity = 2}
+		}
+	},
+	{
+		Result = {
+			Name = "Stellar Forge",
+			Rarity = "Celestial",
+			Description = "Birth of stars\n\n⚡ Roll Speed: +60%\n🍀 Luck: x4.0"
+		},
+		Ingredients = {
+			{Name = "Nebula Gas", Rarity = "Celestial", Quantity = 2},
+			{Name = "Pulsar Core", Rarity = "Celestial", Quantity = 1}
+		}
+	},
+	{
+		Result = {
+			Name = "Gamma Burst",
+			Rarity = "Celestial",
+			Description = "Most powerful explosion\n\n⚡ Roll Speed: +60%\n🍀 Luck: x4.0"
+		},
+		Ingredients = {
+			{Name = "Gamma Ray Burst", Rarity = "Celestial", Quantity = 1},
+			{Name = "Quasar Energy", Rarity = "Celestial", Quantity = 1},
+			{Name = "Blazar Light", Rarity = "Celestial", Quantity = 1}
+		}
+	},
+}
+
+-- Helper function to get recipe by result name
+function CraftingRecipes.GetRecipeByName(resultName)
+	for _, recipe in ipairs(CraftingRecipes.Recipes) do
+		if recipe.Result.Name == resultName then
+			return recipe
+		end
+	end
+	return nil
+end
+
+-- Helper function to get all craftable recipes
+function CraftingRecipes.GetAllRecipes()
+	return CraftingRecipes.Recipes
+end
+
+return CraftingRecipes</string>
+        </Properties>
+      </Item>
+      <Item class="ModuleScript" referent="3">
+        <Properties>
+          <string name="Name">RNGSystem</string>
+          <string name="Source">--[[
+	RNG System Module
+	Handles the weighted random selection of items based on rarity
+]]
+
+local RNGConfig = require(script.Parent.RNGConfig)
+
+local RNGSystem = {}
+
+-- Create a weighted table for efficient random selection
+local function createWeightedTable()
+	local weightedTable = {}
+
+	for _, rarity in ipairs(RNGConfig.Rarities) do
+		table.insert(weightedTable, {
+			Name = rarity.Name,
+			Chance = rarity.Chance,
+			Color = rarity.Color
+		})
+	end
+
+	return weightedTable
+end
+
+-- Select a random rarity based on weighted chances
+function RNGSystem.SelectRarity()
+	local weightedTable = createWeightedTable()
+	local totalWeight = 0
+
+	-- Calculate total weight
+	for _, rarity in ipairs(weightedTable) do
+		totalWeight = totalWeight + rarity.Chance
+	end
+
+	-- Generate random number
+	local random = math.random() * totalWeight
+	local currentWeight = 0
+
+	-- Select rarity based on weight
+	for _, rarity in ipairs(weightedTable) do
+		currentWeight = currentWeight + rarity.Chance
+		if random &lt;= currentWeight then
+			return rarity
+		end
+	end
+
+	-- Fallback to first rarity (should never happen)
+	return weightedTable[1]
+end
+
+-- Select a random item from a specific rarity
+function RNGSystem.SelectItem(rarityName)
+	local items = RNGConfig.Items[rarityName]
+
+	if not items or #items == 0 then
+		warn("No items found for rarity: " .. rarityName)
+		return nil
+	end
+
+	local randomIndex = math.random(1, #items)
+	return items[randomIndex]
+end
+
+-- Perform a complete roll (rarity + item)
+function RNGSystem.PerformRoll()
+	local rarity = RNGSystem.SelectRarity()
+	local item = RNGSystem.SelectItem(rarity.Name)
+
+	if not item then
+		-- Fallback to common if something goes wrong
+		rarity = RNGConfig.Rarities[1]
+		item = RNGConfig.Items.Common[1]
+	end
+
+	-- Calculate total weight for percentage
+	local totalWeight = 0
+	for _, r in ipairs(RNGConfig.Rarities) do
+		totalWeight = totalWeight + r.Chance
+	end
+
+	-- Calculate actual percentage chance
+	local rarityChance = (rarity.Chance / totalWeight) * 100
+
+	return {
+		Rarity = rarity.Name,
+		RarityColor = rarity.Color,
+		RarityChance = rarityChance,
+		ItemName = item.Name,
+		ItemDescription = item.Description,
+		Timestamp = os.time()
+	}
+end
+
+-- Get rarity information by name
+function RNGSystem.GetRarityInfo(rarityName)
+	for _, rarity in ipairs(RNGConfig.Rarities) do
+		if rarity.Name == rarityName then
+			return rarity
+		end
+	end
+	return nil
+end
+
+-- Calculate luck multiplier (can be used for game passes, etc.)
+function RNGSystem.PerformRollWithLuck(luckMultiplier)
+	luckMultiplier = luckMultiplier or 1
+
+	-- Adjust chances based on luck (makes rare items more common)
+	local adjustedRarities = {}
+	for i, rarity in ipairs(RNGConfig.Rarities) do
+		local adjustedChance = rarity.Chance
+
+		-- Increase chances for rarer items with luck
+		if i &gt; 3 then -- Only affect rare and above
+			adjustedChance = adjustedChance * luckMultiplier
+		end
+
+		table.insert(adjustedRarities, {
+			Name = rarity.Name,
+			Chance = adjustedChance,
+			Color = rarity.Color
+		})
+	end
+
+	-- Normalize chances to maintain 100% total
+	local totalChance = 0
+	for _, rarity in ipairs(adjustedRarities) do
+		totalChance = totalChance + rarity.Chance
+	end
+
+	local random = math.random() * totalChance
+	local currentWeight = 0
+
+	for _, rarity in ipairs(adjustedRarities) do
+		currentWeight = currentWeight + rarity.Chance
+		if random &lt;= currentWeight then
+			local item = RNGSystem.SelectItem(rarity.Name)
+
+			return {
+				Rarity = rarity.Name,
+				RarityColor = rarity.Color,
+				RarityChance = (RNGConfig.Rarities[table.find(RNGConfig.Rarities, 
+					function(r) return r.Name == rarity.Name end) or 1].Chance / totalChance) * 100,
+				ItemName = item.Name,
+				ItemDescription = item.Description,
+				Timestamp = os.time()
+			}
+		end
+	end
+
+	-- Fallback
+	return RNGSystem.PerformRoll()
+end
+
+return RNGSystem</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="ServerScriptService" referent="4">
+      <Properties>
+        <string name="Name">ServerScriptService</string>
+      </Properties>
+      <Item class="Script" referent="5">
+        <Properties>
+          <string name="Name">CraftingServer</string>
+          <token name="RunContext">0</token>
+          <string name="Source"><![CDATA[-- CraftingServer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local CraftingEvent = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("CraftingEvent")
+local InventoryUpdateEvent = ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("InventoryUpdateEvent")
+
+local CraftingRecipes = require(ReplicatedStorage:WaitForChild("CraftingRecipes"))
+local PlayerDataManager = require(game.ServerScriptService:WaitForChild("PlayerDataManager"))
+
+local function CanCraft(player, recipe)
+	local inv = PlayerDataManager.GetInventory(player)
+	local inventoryLookup = {}
+	for _, item in ipairs(inv) do
+		local key = item.ItemName .. "|" .. item.Rarity
+		inventoryLookup[key] = (inventoryLookup[key] or 0) + (item.Quantity or 1)
+	end
+	for _, ing in ipairs(recipe.Ingredients) do
+		local key = ing.Name .. "|" .. ing.Rarity
+		if (inventoryLookup[key] or 0) < ing.Quantity then
+			return false
+		end
+	end
+	return true
+end
+
+local function ApplyCraft(player, recipe)
+	local data = PlayerDataManager.GetData(player)
+	local inv = data.Inventory
+
+	local inventoryLookup = {}
+	for i, item in ipairs(inv) do
+		local key = item.ItemName .. "|" .. item.Rarity
+		if not inventoryLookup[key] then
+			inventoryLookup[key] = {quantity = 0, indices = {}}
+		end
+		inventoryLookup[key].quantity += (item.Quantity or 1)
+		table.insert(inventoryLookup[key].indices, i)
+	end
+
+	for _, ing in ipairs(recipe.Ingredients) do
+		local key = ing.Name .. "|" .. ing.Rarity
+		local needed = ing.Quantity
+		local lookup = inventoryLookup[key]
+		if lookup then
+			for _, index in ipairs(lookup.indices) do
+				if needed <= 0 then break end
+				local item = inv[index]
+				local available = item.Quantity or 1
+				local toRemove = math.min(available, needed)
+				item.Quantity = available - toRemove
+				needed -= toRemove
+				if item.Quantity <= 0 then
+					item._remove = true
+				end
+			end
+		end
+	end
+
+	for i = #inv, 1, -1 do
+		if inv[i]._remove then
+			if data.EquippedIndex == i then
+				data.EquippedIndex = nil
+			elseif data.EquippedIndex and data.EquippedIndex > i then
+				data.EquippedIndex -= 1
+			end
+			table.remove(inv, i)
+		end
+	end
+
+	local resultFound = false
+	for _, item in ipairs(inv) do
+		if item.ItemName == recipe.Result.Name and item.Rarity == recipe.Result.Rarity then
+			item.Quantity = (item.Quantity or 1) + 1
+			item.IsCrafted = true
+			item.Description = recipe.Result.Description
+			resultFound = true
+			break
+		end
+	end
+
+	if not resultFound then
+		table.insert(inv, {
+			ItemName = recipe.Result.Name,
+			Rarity = recipe.Result.Rarity,
+			Description = recipe.Result.Description,
+			Quantity = 1,
+			Equipped = false,
+			IsCrafted = true
+		})
+	end
+
+	PlayerDataManager.SaveData(player)
+
+	if _G.sendFullUpdate then
+		_G.sendFullUpdate(player)
+	end
+end
+
+CraftingEvent.OnServerEvent:Connect(function(player, recipeIndex)
+	local recipes = CraftingRecipes.Recipes
+	if not recipes or not recipes[recipeIndex] then
+		CraftingEvent:FireClient(player, {Success = false, Message = "Recipe not found"})
+		return
+	end
+	local recipe = recipes[recipeIndex]
+	if CanCraft(player, recipe) then
+		ApplyCraft(player, recipe)
+		CraftingEvent:FireClient(player, {Success = true, Result = recipe.Result})
+	else
+		CraftingEvent:FireClient(player, {Success = false, Message = "Not enough ingredients"})
+	end
+end)
+
+print("[CraftingServer] Initialized")
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="Script" referent="6">
+        <Properties>
+          <string name="Name">GiveAllMaterialsHandler</string>
+          <token name="RunContext">0</token>
+          <string name="Source"><![CDATA[-- GiveAllMaterialsHandler (Server Script - Owner Only)
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local PlayerDataManager = require(script.Parent:WaitForChild("PlayerDataManager"))
+local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+
+local RemoteEventsFolder = ReplicatedStorage:WaitForChild("RemoteEvents")
+local GiveAllMaterialsEvent = RemoteEventsFolder:WaitForChild("GiveAllMaterialsEvent")
+
+GiveAllMaterialsEvent.OnServerEvent:Connect(function(player)
+	if player.UserId ~= game.CreatorId then
+		GiveAllMaterialsEvent:FireClient(player, {Success = false, Message = "Only the server owner can use this feature"})
+		return
+	end
+
+	local data = PlayerDataManager.GetData(player)
+	if not data then
+		GiveAllMaterialsEvent:FireClient(player, {Success = false, Message = "No player data found"})
+		return
+	end
+
+	local addedCount = 0
+	local currentTime = os.time()
+
+	for rarityName, items in pairs(RNGConfig.Items) do
+		for _, itemData in ipairs(items) do
+			local rollResult = {
+				ItemName = itemData.Name,
+				Rarity = rarityName,
+				ItemDescription = itemData.Description,
+				Timestamp = currentTime
+			}
+			if PlayerDataManager.AddItemToInventory(player, rollResult) then
+				addedCount += 1
+			end
+		end
+	end
+
+	PlayerDataManager.SaveData(player)
+	GiveAllMaterialsEvent:FireClient(player, {Success = true, Message = "Added " .. addedCount .. " materials!"})
+end)
+
+print("[GiveAllMaterialsHandler] Initialized")
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="Script" referent="7">
+        <Properties>
+          <string name="Name">ItemDisplayAnimation</string>
+          <token name="RunContext">0</token>
+          <string name="Source"><![CDATA[-- ItemDisplayAnimation (Server Script)
+-- Animates items placed on pedestals with floating + spinning
+local TweenService = game:GetService("TweenService")
+
+local function animateItemDisplay(itemDisplay)
+	local basePart = itemDisplay:FindFirstChild("ItemBase")
+	if not basePart then return end
+
+	local originalCFrame = basePart.CFrame
+
+	task.spawn(function()
+		while itemDisplay and itemDisplay.Parent do
+			local floatUp = TweenService:Create(basePart, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
+				CFrame = originalCFrame * CFrame.new(0, 0.5, 0)
+			})
+			local floatDown = TweenService:Create(basePart, TweenInfo.new(2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {
+				CFrame = originalCFrame
+			})
+
+			floatUp:Play()
+			floatUp.Completed:Wait()
+			if not (itemDisplay and itemDisplay.Parent) then break end
+
+			floatDown:Play()
+			floatDown.Completed:Wait()
+			if not (itemDisplay and itemDisplay.Parent) then break end
+		end
+	end)
+end
+
+-- Watch all Item Stand models in workspace
+local function watchModel(model)
+	if not model:IsA("Model") then return end
+	model.DescendantAdded:Connect(function(descendant)
+		if descendant.Name == "ItemBase" and descendant:IsA("Part") then
+			task.wait(0.5)
+			animateItemDisplay(descendant.Parent)
+		end
+	end)
+	-- Animate existing items
+	for _, descendant in ipairs(model:GetDescendants()) do
+		if descendant.Name == "ItemBase" and descendant:IsA("Part") then
+			animateItemDisplay(descendant.Parent)
+		end
+	end
+end
+
+for _, child in ipairs(workspace:GetChildren()) do
+	watchModel(child)
+end
+workspace.ChildAdded:Connect(watchModel)
+
+print("[ItemDisplayAnimation] Initialized")
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="Script" referent="8">
+        <Properties>
+          <string name="Name">MoneySystem</string>
+          <token name="RunContext">0</token>
+          <string name="Source"><![CDATA[-- MoneySystem (Server Script)
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local PlayerDataManager = require(script.Parent.PlayerDataManager)
+local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+
+local MoneyConfig = {
+	BaseIncomeRate = 1,
+	IncomeInterval = 1,
+}
+
+local incomeTasks = {}
+
+local rarityMultiplier = {
+	Common = 1, Uncommon = 1.5, Rare = 2, Epic = 3,
+	Legendary = 5, Mythical = 8, Divine = 12, Exotic = 18, Celestial = 25,
+}
+
+local function calculateIncomeRate(player)
+	local data = PlayerDataManager.GetData(player)
+	if not data then return MoneyConfig.BaseIncomeRate end
+	for _, item in ipairs(data.Inventory) do
+		if item.Equipped then
+			return MoneyConfig.BaseIncomeRate * (rarityMultiplier[item.Rarity] or 1)
+		end
+	end
+	return MoneyConfig.BaseIncomeRate
+end
+
+local RemoteEventsFolder = ReplicatedStorage:WaitForChild("RemoteEvents")
+local MoneyUpdateEvent = RemoteEventsFolder:WaitForChild("MoneyUpdateEvent")
+
+local function giveMoney(player)
+	local rate = calculateIncomeRate(player)
+	if rate > 0 then
+		PlayerDataManager.AddCurrency(player, rate)
+		MoneyUpdateEvent:FireClient(player, {
+			Amount = rate,
+			Total = PlayerDataManager.GetCurrency(player),
+			IncomeRate = rate
+		})
+	end
+end
+
+local function startIncome(player)
+	if incomeTasks[player.UserId] then
+		task.cancel(incomeTasks[player.UserId])
+	end
+	incomeTasks[player.UserId] = task.spawn(function()
+		while true do
+			task.wait(MoneyConfig.IncomeInterval)
+			if player and player.Parent == Players then
+				giveMoney(player)
+			else
+				break
+			end
+		end
+	end)
+end
+
+local function stopIncome(player)
+	if incomeTasks[player.UserId] then
+		task.cancel(incomeTasks[player.UserId])
+		incomeTasks[player.UserId] = nil
+	end
+end
+
+Players.PlayerAdded:Connect(function(player)
+	task.wait(1)
+	startIncome(player)
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+	stopIncome(player)
+	PlayerDataManager.SaveData(player)
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+	task.spawn(function()
+		task.wait(1)
+		startIncome(player)
+	end)
+end
+
+local GetMoneyFunction = RemoteEventsFolder:WaitForChild("GetMoneyFunction")
+GetMoneyFunction.OnServerInvoke = function(player)
+	return PlayerDataManager.GetCurrency(player)
+end
+
+local EquipEvent = RemoteEventsFolder:WaitForChild("EquipEvent")
+EquipEvent.OnServerEvent:Connect(function(player)
+	task.wait(0.5)
+	startIncome(player)
+end)
+
+print("[MoneySystem] Initialized")
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="Script" referent="9">
+        <Properties>
+          <string name="Name">PedestalPlacementSystem</string>
+          <token name="RunContext">0</token>
+          <string name="Source"><![CDATA[-- PedestalPlacementSystem (Server Script)
+-- Handles ProximityPrompt interaction + crafted item placement on pedestals
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local RemoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
+
+-- Create or reuse PlaceItemOnPedestal event
+local PlaceItemEvent = RemoteEvents:FindFirstChild("PlaceItemOnPedestal")
+if not PlaceItemEvent then
+	PlaceItemEvent = Instance.new("RemoteEvent")
+	PlaceItemEvent.Name = "PlaceItemOnPedestal"
+	PlaceItemEvent.Parent = RemoteEvents
+end
+
+-- Create or reuse OpenPedestalSelection event
+local OpenPedestalSelectionEvent = RemoteEvents:FindFirstChild("OpenPedestalSelection")
+if not OpenPedestalSelectionEvent then
+	OpenPedestalSelectionEvent = Instance.new("RemoteEvent")
+	OpenPedestalSelectionEvent.Name = "OpenPedestalSelection"
+	OpenPedestalSelectionEvent.Parent = RemoteEvents
+end
+
+local PlayerDataManager = require(game.ServerScriptService:WaitForChild("PlayerDataManager"))
+
+-- Store placed item models per pedestal so we can clear them when replaced
+local placedItems = {}
+
+-- Rarity color table
+local rarityColors = {
+	Common    = Color3.fromRGB(150, 150, 150),
+	Uncommon  = Color3.fromRGB(50, 200, 50),
+	Rare      = Color3.fromRGB(50, 100, 255),
+	Epic      = Color3.fromRGB(200, 50, 200),
+	Legendary = Color3.fromRGB(255, 200, 50),
+	Mythical  = Color3.fromRGB(255, 100, 50),
+	Divine    = Color3.fromRGB(255, 255, 255),
+	Exotic    = Color3.fromRGB(100, 255, 255),
+	Celestial = Color3.fromRGB(150, 100, 255),
+}
+
+-- Builds the visual 3D item. Ensures it has a PrimaryPart for pivoting.
+local function createItemDisplay(itemName, itemRarity)
+	local displayModel = Instance.new("Model")
+	displayModel.Name = itemName .. "_Display"
+
+	local basePart = Instance.new("Part")
+	basePart.Name = "ItemBase"
+	basePart.Anchored = true
+	basePart.CanCollide = false
+
+	-- Determine geometric shape based on item name keywords
+	if itemName:find("Steel") or itemName:find("Bronze") or itemName:find("Alloy") or itemName:find("Metal") or itemName == "Iron" or itemName == "Copper" then
+		basePart.Shape    = Enum.PartType.Block
+		basePart.Size     = Vector3.new(2.5, 1, 1.2)
+		basePart.Material = Enum.Material.Metal
+	elseif itemName == "Water" or itemName:find("Crystal") or itemName:find("Essence") or itemName == "Salt" then
+		basePart.Shape        = Enum.PartType.Ball
+		basePart.Size         = Vector3.new(2, 2, 2)
+		basePart.Material     = Enum.Material.Glass
+		basePart.Transparency = 0.4
+		basePart.Reflectance  = 0.5
+	else
+		basePart.Shape    = Enum.PartType.Ball
+		basePart.Size     = Vector3.new(2, 2, 2)
+		basePart.Material = Enum.Material.Neon
+	end
+
+	basePart.Color  = rarityColors[itemRarity] or rarityColors.Common
+	basePart.Parent = displayModel
+	
+	-- Critical fix: Set PrimaryPart so :PivotTo() works perfectly
+	displayModel.PrimaryPart = basePart
+
+	-- Glow effect
+	local light = Instance.new("PointLight")
+	light.Color      = basePart.Color
+	light.Brightness = 3
+	light.Range      = 10
+	light.Parent     = basePart
+
+	-- Billboard GUI for item name
+	local billboard = Instance.new("BillboardGui")
+	billboard.Size         = UDim2.new(5, 0, 1.2, 0)
+	billboard.StudsOffset  = Vector3.new(0, 3, 0)
+	billboard.AlwaysOnTop  = true
+	billboard.Adornee      = basePart
+	billboard.Parent       = displayModel
+
+	local label = Instance.new("TextLabel")
+	label.Size               = UDim2.new(1, 0, 1, 0)
+	label.BackgroundTransparency = 1
+	label.Text               = itemName
+	label.TextColor3         = basePart.Color
+	label.TextScaled         = true
+	label.Font               = Enum.Font.GothamBold
+	label.Parent             = billboard
+
+	-- Particle effect
+	local att = Instance.new("Attachment", basePart)
+	local particles = Instance.new("ParticleEmitter", att)
+	particles.Color       = ColorSequence.new(basePart.Color)
+	particles.Size        = NumberSequence.new(0.2, 0.5)
+	particles.Lifetime    = NumberRange.new(1, 2)
+	particles.Rate        = 20
+	particles.Speed       = NumberRange.new(1, 3)
+	particles.SpreadAngle = Vector2.new(180, 180)
+	particles.Parent      = att
+
+	-- Simple continuous rotation handled by the server
+	task.spawn(function()
+		while basePart and basePart.Parent do
+			basePart.CFrame = basePart.CFrame * CFrame.Angles(0, math.rad(1), 0)
+			task.wait()
+		end
+	end)
+
+	return displayModel
+end
+
+-- Core placement logic, completely rewritten for safety
+local function placeItemOnPedestal(player, itemStand, itemName)
+	-- 1. Validate the Pedestal exists and has a spawn point
+	if not itemStand or not itemStand:IsA("Model") then
+		warn("[Pedestal] Invalid itemStand passed by", player.Name)
+		return
+	end
+
+	local equipmentSpawner = itemStand:FindFirstChild("EquipmentSpawner")
+	if not equipmentSpawner or not equipmentSpawner:IsA("BasePart") then
+		warn("[Pedestal] ItemStand", itemStand.Name, "is missing 'EquipmentSpawner' BasePart.")
+		return
+	end
+
+	-- 2. Verify Player Inventory & Ownership
+	local inventory = PlayerDataManager.GetInventory(player)
+	if not inventory then
+		warn("[Pedestal] Could not load inventory for", player.Name)
+		return
+	end
+
+	local itemRarity = "Common"
+	local hasItem = false
+
+	for _, item in ipairs(inventory) do
+		if item.ItemName == itemName and item.IsCrafted then
+			hasItem = true
+			itemRarity = item.Rarity or "Common"
+			break
+		end
+	end
+
+	if not hasItem then
+		warn("[Pedestal]", player.Name, "attempted to place", itemName, "but doesn't own a crafted version.")
+		return
+	end
+
+	-- 3. Clear Existing Item
+	if placedItems[itemStand] then
+		placedItems[itemStand]:Destroy()
+		placedItems[itemStand] = nil
+	end
+
+	-- 4. Create and Position New Item
+	local display = createItemDisplay(itemName, itemRarity)
+	
+	-- We use PivotTo now that PrimaryPart is guaranteed to be set
+	-- Float it exactly 3 studs above the spawner's center point
+	display:PivotTo(equipmentSpawner.CFrame * CFrame.new(0, 3, 0))
+	display.Parent = itemStand
+	
+	-- Store reference
+	placedItems[itemStand] = display
+
+	print("[Pedestal] Successfully placed", itemName, "on", itemStand.Name, "by", player.Name)
+end
+
+-- Network Reception
+PlaceItemEvent.OnServerEvent:Connect(function(player, itemStand, itemName)
+	placeItemOnPedestal(player, itemStand, itemName)
+end)
+
+-- Prompt Setup Function
+local function setupPedestal(model)
+	if not model:IsA("Model") or model.Name ~= "Item Stand" then return end
+
+	local part = model:FindFirstChild("EquipmentSpawner") 
+		or model:FindFirstChild("MainPart") 
+		or model:FindFirstChildWhichIsA("BasePart")
+		
+	if not part then return end
+	if part:FindFirstChild("PedestalPrompt") then return end
+
+	local prompt = Instance.new("ProximityPrompt")
+	prompt.Name         = "PedestalPrompt"
+	prompt.ActionText   = "Manage Pedestal"
+	prompt.ObjectText   = "Item Stand"
+	prompt.HoldDuration = 0.5
+	prompt.RequiresLineOfSight = false
+	prompt.MaxActivationDistance = 10
+	prompt.Parent       = part
+
+	prompt.Triggered:Connect(function(player)
+		local ok, err = pcall(function()
+			local inventory = PlayerDataManager.GetInventory(player)
+			local craftedItems = {}
+
+			if inventory then
+				for _, item in ipairs(inventory) do
+					if item.IsCrafted then
+						table.insert(craftedItems, item)
+					end
+				end
+			end
+
+			-- Always fire so UI opens, even if empty
+			OpenPedestalSelectionEvent:FireClient(player, model, craftedItems)
+		end)
+
+		if not ok then
+			warn("[PedestalPlacementSystem] Trigger error:", err)
+		end
+	end)
+end
+
+-- Initialize existing pedestals + future ones (handling nested pedestals gracefully)
+for _, desc in ipairs(workspace:GetDescendants()) do
+	setupPedestal(desc)
+end
+workspace.DescendantAdded:Connect(setupPedestal)
+
+print("[PedestalPlacementSystem] Completely Rewritten & Initialized")
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="ModuleScript" referent="10">
+        <Properties>
+          <string name="Name">PlayerDataManager</string>
+          <string name="Source">--[[
+	Player Data Manager
+	Handles saving and loading player inventory and roll history
+]]
+
+local Players = game:GetService("Players")
+local DataStoreService = game:GetService("DataStoreService")
+
+local PlayerDataStore = DataStoreService:GetDataStore("PlayerRNGData")
+
+local PlayerDataManager = {}
+PlayerDataManager.PlayerData = {}
+
+-- Default data structure for new players
+local function getDefaultData()
+	return {
+		Inventory = {},
+		EquippedIndex = nil, -- Index of equipped item or nil
+		RollHistory = {},
+		TotalRolls = 0,
+		LastRollTime = 0,
+		Currency = 0, -- Optional currency for roll costs
+		LuckMultiplier = 1
+	}
+end
+
+-- Load player data
+function PlayerDataManager.LoadData(player)
+	local success, data = pcall(function()
+		return PlayerDataStore:GetAsync(player.UserId)
+	end)
+
+	if success and data then
+		-- Migrate old data format to new format
+		if data.EquippedItem ~= nil and data.EquippedIndex == nil then
+			print("Migrating old EquippedItem field to EquippedIndex for " .. player.Name)
+			data.EquippedIndex = data.EquippedItem
+			data.EquippedItem = nil
+		end
+		
+		-- Ensure all inventory items have IsCrafted field
+		if data.Inventory then
+			for _, item in ipairs(data.Inventory) do
+				if item.IsCrafted == nil then
+					item.IsCrafted = false -- Default to false for existing items
+				end
+			end
+		end
+		
+		PlayerDataManager.PlayerData[player.UserId] = data
+		print("Loaded data for " .. player.Name)
+	else
+		PlayerDataManager.PlayerData[player.UserId] = getDefaultData()
+		print("Created new data for " .. player.Name)
+	end
+
+	return PlayerDataManager.PlayerData[player.UserId]
+end
+
+-- Save player data
+function PlayerDataManager.SaveData(player)
+	local data = PlayerDataManager.PlayerData[player.UserId]
+
+	if not data then
+		warn("No data to save for " .. player.Name)
+		return false
+	end
+
+	local success, err = pcall(function()
+		PlayerDataStore:SetAsync(player.UserId, data)
+	end)
+
+	if success then
+		print("Saved data for " .. player.Name)
+		return true
+	else
+		warn("Failed to save data for " .. player.Name .. ": " .. tostring(err))
+		return false
+	end
+end
+
+-- Get player data
+function PlayerDataManager.GetData(player)
+	return PlayerDataManager.PlayerData[player.UserId]
+end
+
+-- Add item to player inventory (with stacking)
+function PlayerDataManager.AddItemToInventory(player, rollResult)
+	local data = PlayerDataManager.GetData(player)
+
+	if not data then
+		warn("No data found for " .. player.Name)
+		return false
+	end
+
+	-- Check if item already exists (same name and rarity)
+	for _, item in ipairs(data.Inventory) do
+		if item.ItemName == rollResult.ItemName and item.Rarity == rollResult.Rarity then
+			-- Increment quantity instead of adding new entry
+			item.Quantity = (item.Quantity or 1) + 1
+			print("Stacked " .. rollResult.ItemName .. " (now x" .. item.Quantity .. ") for " .. player.Name)
+			return true
+		end
+	end
+
+	-- Create new inventory entry
+	local inventoryItem = {
+		ItemName = rollResult.ItemName,
+		Rarity = rollResult.Rarity,
+		Description = rollResult.ItemDescription,
+		ObtainedAt = rollResult.Timestamp,
+		Equipped = false,
+		Quantity = 1,
+		IsCrafted = rollResult.IsCrafted or false -- Include IsCrafted field
+	}
+
+	table.insert(data.Inventory, inventoryItem)
+	print("Added " .. rollResult.ItemName .. " to " .. player.Name .. "'s inventory. Total items: " .. #data.Inventory)
+
+	-- Add to roll history (keep last 50 rolls)
+	table.insert(data.RollHistory, 1, {
+		ItemName = rollResult.ItemName,
+		Rarity = rollResult.Rarity,
+		Timestamp = rollResult.Timestamp
+	})
+
+	if #data.RollHistory &gt; 50 then
+		table.remove(data.RollHistory)
+	end
+
+	data.TotalRolls = data.TotalRolls + 1
+
+	return true
+end
+
+-- Check if player can roll (cooldown check)
+function PlayerDataManager.CanRoll(player)
+	local data = PlayerDataManager.GetData(player)
+
+	if not data then
+		return false, "No data found"
+	end
+
+	local RNGConfig = require(game.ReplicatedStorage:WaitForChild("RNGConfig"))
+	local currentTime = os.time()
+	local timeSinceLastRoll = currentTime - data.LastRollTime
+
+	if timeSinceLastRoll &lt; RNGConfig.RollCooldown then
+		local timeRemaining = RNGConfig.RollCooldown - timeSinceLastRoll
+		return false, "Cooldown: " .. timeRemaining .. "s remaining"
+	end
+
+	return true, "Can roll"
+end
+
+-- Update last roll time
+function PlayerDataManager.UpdateRollTime(player)
+	local data = PlayerDataManager.GetData(player)
+
+	if data then
+		data.LastRollTime = os.time()
+	end
+end
+
+-- Get player inventory
+function PlayerDataManager.GetInventory(player)
+	local data = PlayerDataManager.GetData(player)
+	return data and data.Inventory or {}
+end
+
+-- Set player inventory (for crafting system)
+function PlayerDataManager.SetInventory(player, inventory)
+	local data = PlayerDataManager.GetData(player)
+
+	if not data then
+		warn("No data found for " .. player.Name)
+		return false
+	end
+
+	-- Keep track of existing IsCrafted status
+	local existingCraftedStatus = {}
+	for _, item in ipairs(data.Inventory) do
+		local key = item.ItemName .. "|" .. item.Rarity
+		existingCraftedStatus[key] = item.IsCrafted or false
+	end
+
+	-- Convert dictionary back to array format
+	local newInventory = {}
+	for key, quantity in pairs(inventory) do
+		local itemName, rarity = key:match("(.+)|(.+)")
+		if itemName and rarity then
+			-- Find description from RNGConfig
+			local description = ""
+			local RNGConfig = require(game.ReplicatedStorage:WaitForChild("RNGConfig"))
+			for _, rarityData in ipairs(RNGConfig.Rarities) do
+				if rarityData.Name == rarity then
+					local items = RNGConfig.Items[rarity]
+					if items then
+						for _, item in ipairs(items) do
+							if item.Name == itemName then
+								description = item.Description
+								break
+							end
+						end
+					end
+					break
+				end
+			end
+
+			-- Check if item already exists in inventory
+			local found = false
+			for _, existingItem in ipairs(newInventory) do
+				if existingItem.ItemName == itemName and existingItem.Rarity == rarity then
+					existingItem.Quantity = quantity
+					found = true
+					break
+				end
+			end
+
+			if not found then
+				-- Preserve IsCrafted status from existing inventory
+				local wasCrafted = existingCraftedStatus[key] or false
+				table.insert(newInventory, {
+					ItemName = itemName,
+					Rarity = rarity,
+					Description = description,
+					Quantity = quantity,
+					Equipped = false,
+					IsCrafted = wasCrafted -- Preserve existing IsCrafted status
+				})
+			end
+		end
+	end
+
+	data.Inventory = newInventory
+	print("[PlayerDataManager] Set inventory for " .. player.Name .. " with " .. #newInventory .. " items")
+	return true
+end
+
+-- Get player roll history
+function PlayerDataManager.GetRollHistory(player)
+	local data = PlayerDataManager.GetData(player)
+	return data and data.RollHistory or {}
+end
+
+-- Add to roll history
+function PlayerDataManager.AddToRollHistory(player, rollResult)
+	local data = PlayerDataManager.GetData(player)
+
+	if not data then
+		return false
+	end
+
+	-- Add to roll history (keep last 50 rolls)
+	table.insert(data.RollHistory, 1, {
+		ItemName = rollResult.ItemName,
+		Rarity = rollResult.Rarity,
+		Timestamp = rollResult.Timestamp
+	})
+
+	if #data.RollHistory &gt; 50 then
+		table.remove(data.RollHistory)
+	end
+
+	return true
+end
+
+-- Equip an item
+function PlayerDataManager.EquipItem(player, itemIndex)
+	print("[PlayerDataManager] EquipItem called for player:", player.Name, "index:", tostring(itemIndex))
+	local data = PlayerDataManager.GetData(player)
+
+	if not data then
+		print("[PlayerDataManager] No data found for player")
+		return false, "No data found"
+	end
+
+	if not data.Inventory[itemIndex] then
+		print("[PlayerDataManager] Invalid item index:", itemIndex, "Inventory size:", #data.Inventory)
+		return false, "Invalid item index"
+	end
+
+	-- Unequip all items
+	for _, item in ipairs(data.Inventory) do
+		item.Equipped = false
+	end
+
+	-- Equip selected item
+	data.Inventory[itemIndex].Equipped = true
+	data.EquippedIndex = itemIndex
+
+	print("[PlayerDataManager] Equipped item at index " .. itemIndex .. " for " .. player.Name)
+
+	-- Return a complete item object with all required fields
+	local equippedItem = data.Inventory[itemIndex]
+	local returnData = {
+		ItemName = equippedItem.ItemName,
+		Rarity = equippedItem.Rarity,
+		Description = equippedItem.Description or "No description",
+		IsCrafted = equippedItem.IsCrafted or false
+	}
+	print("[PlayerDataManager] Returning item data:", returnData.ItemName, returnData.Rarity, "IsCrafted:", returnData.IsCrafted)
+	return true, returnData
+end
+
+-- Remove item from inventory (with stacking support)
+function PlayerDataManager.RemoveItemFromInventory(player, itemIndex)
+	local data = PlayerDataManager.GetData(player)
+
+	if not data or not data.Inventory[itemIndex] then
+		return false
+	end
+
+	local item = data.Inventory[itemIndex]
+	local quantity = item.Quantity or 1
+
+	if quantity &gt; 1 then
+		-- Decrement quantity instead of removing
+		item.Quantity = quantity - 1
+		print("Decremented " .. item.ItemName .. " to x" .. item.Quantity .. " for " .. player.Name)
+		return true
+	end
+
+	-- Check if the item being deleted is equipped
+	local wasEquipped = item.Equipped
+
+	-- Remove the item (quantity is 1)
+	table.remove(data.Inventory, itemIndex)
+
+	-- If the deleted item was equipped, update equipped index
+	if wasEquipped then
+		data.EquippedIndex = nil
+	elseif data.EquippedIndex and data.EquippedIndex &gt; itemIndex then
+		-- If an item after the deleted one was equipped, adjust the index
+		data.EquippedIndex = data.EquippedIndex - 1
+	end
+
+	print("Removed item at index " .. itemIndex .. " from " .. player.Name .. "'s inventory. Remaining items: " .. #data.Inventory)
+
+	return true
+end
+
+-- Get equipped item
+function PlayerDataManager.GetEquippedItem(player)
+	local data = PlayerDataManager.GetData(player)
+
+	if not data then
+		return nil
+	end
+
+	for _, item in ipairs(data.Inventory) do
+		if item.Equipped then
+			return item
+		end
+	end
+
+	return nil
+end
+
+-- Get player currency
+function PlayerDataManager.GetCurrency(player)
+	local data = PlayerDataManager.GetData(player)
+	return data and data.Currency or 0
+end
+
+-- Add currency
+function PlayerDataManager.AddCurrency(player, amount)
+	local data = PlayerDataManager.GetData(player)
+
+	if not data then
+		return false
+	end
+
+	data.Currency = data.Currency + amount
+	return true
+end
+
+-- Remove currency (returns true if successful, false if not enough)
+function PlayerDataManager.RemoveCurrency(player, amount)
+	local data = PlayerDataManager.GetData(player)
+
+	if not data or data.Currency &lt; amount then
+		return false
+	end
+
+	data.Currency = data.Currency - amount
+	return true
+end
+
+-- Get total rolls
+function PlayerDataManager.GetTotalRolls(player)
+	local data = PlayerDataManager.GetData(player)
+	return data and data.TotalRolls or 0
+end
+
+return PlayerDataManager</string>
+        </Properties>
+      </Item>
+      <Item class="Script" referent="11">
+        <Properties>
+          <string name="Name">RNGServer</string>
+          <token name="RunContext">0</token>
+          <string name="Source"><![CDATA[local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local RNGSystem = require(ReplicatedStorage:WaitForChild("RNGSystem"))
+local PlayerDataManager = require(script.Parent:WaitForChild("PlayerDataManager"))
+
+local RemoteEventsFolder = ReplicatedStorage:WaitForChild("RemoteEvents")
+local RollEvent = RemoteEventsFolder:WaitForChild("RollEvent")
+local InventoryUpdateEvent = RemoteEventsFolder:WaitForChild("InventoryUpdateEvent")
+local EquipEvent = RemoteEventsFolder:WaitForChild("EquipEvent")
+local DeleteEvent = RemoteEventsFolder:WaitForChild("DeleteEvent")
+local GetInventoryFunction = RemoteEventsFolder:WaitForChild("GetInventoryFunction")
+
+-- Create GetEquippedFunction if it doesn't exist
+local GetEquippedFunction = RemoteEventsFolder:FindFirstChild("GetEquippedFunction")
+if not GetEquippedFunction then
+	GetEquippedFunction = Instance.new("RemoteFunction")
+	GetEquippedFunction.Name = "GetEquippedFunction"
+	GetEquippedFunction.Parent = RemoteEventsFolder
+end
+
+-- Create BulkDeleteEvent if it doesn't exist
+local BulkDeleteEvent = RemoteEventsFolder:FindFirstChild("BulkDeleteEvent")
+if not BulkDeleteEvent then
+	BulkDeleteEvent = Instance.new("RemoteEvent")
+	BulkDeleteEvent.Name = "BulkDeleteEvent"
+	BulkDeleteEvent.Parent = RemoteEventsFolder
+end
+
+local function sendFullUpdate(player)
+	local data = PlayerDataManager.GetData(player)
+	if not data then return end
+
+	local copy = {
+		Inventory = {},
+		TotalRolls = #data.RollHistory,
+		Currency = data.Currency or 0,
+	}
+
+	for i, item in ipairs(data.Inventory) do
+		copy.Inventory[i] = {
+			ItemName = item.ItemName,
+			Rarity = item.Rarity,
+			Description = item.Description,
+			Equipped = (data.EquippedIndex == i),
+			Quantity = item.Quantity or 1,
+			OriginalIndex = i,
+			IsCrafted = item.IsCrafted or false
+		}
+	end
+
+	InventoryUpdateEvent:FireClient(player, copy)
+end
+
+_G.sendFullUpdate = sendFullUpdate
+
+Players.PlayerAdded:Connect(function(player)
+	PlayerDataManager.LoadData(player)
+	sendFullUpdate(player)
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+	PlayerDataManager.SaveData(player)
+end)
+
+-- Auto-save every 60 seconds
+task.spawn(function()
+	while true do
+		task.wait(60)
+		for _, player in Players:GetPlayers() do
+			PlayerDataManager.SaveData(player)
+		end
+	end
+end)
+
+RollEvent.OnServerEvent:Connect(function(player)
+	local canRoll, msg = PlayerDataManager.CanRoll(player)
+	if not canRoll then
+		RollEvent:FireClient(player, {Success=false, Message=msg})
+		return
+	end
+
+	local luckMultiplier = 1
+	local equippedItem = PlayerDataManager.GetEquippedItem(player)
+	if equippedItem and equippedItem.IsCrafted then
+		local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+		for _, rarity in ipairs(RNGConfig.Rarities) do
+			if rarity.Name == equippedItem.Rarity then
+				luckMultiplier = rarity.LuckBuff or 1
+				break
+			end
+		end
+	end
+
+	local rollResult = RNGSystem.PerformRollWithLuck(luckMultiplier)
+
+	if not rollResult or not rollResult.ItemName then
+		RollEvent:FireClient(player, {Success=false, Message="Invalid roll result"})
+		return
+	end
+
+	PlayerDataManager.UpdateRollTime(player)
+
+	local normalizedItem = {
+		ItemName = rollResult.ItemName,
+		Rarity = rollResult.Rarity,
+		Description = rollResult.ItemDescription,
+		Equipped = false,
+		ObtainedAt = rollResult.Timestamp or os.time()
+	}
+
+	PlayerDataManager.AddItemToInventory(player, normalizedItem)
+	PlayerDataManager.AddToRollHistory(player, normalizedItem)
+
+	RollEvent:FireClient(player, {
+		Success = true,
+		Result = rollResult
+	})
+
+	sendFullUpdate(player)
+end)
+
+EquipEvent.OnServerEvent:Connect(function(player, index)
+	local success, equippedItem = PlayerDataManager.EquipItem(player, index)
+	if success then
+		local fullEquippedItem = PlayerDataManager.GetEquippedItem(player)
+		EquipEvent:FireClient(player, {Success = true, EquippedItem = fullEquippedItem})
+		local EquipEffectsEvent = RemoteEventsFolder:FindFirstChild("EquipEffectsEvent")
+		if EquipEffectsEvent then
+			EquipEffectsEvent:FireAllClients({Player = player, Action = "Equip", ItemData = fullEquippedItem})
+		end
+	else
+		EquipEvent:FireClient(player, {Success = false, Message = equippedItem or "Failed to equip item"})
+	end
+	sendFullUpdate(player)
+end)
+
+DeleteEvent.OnServerEvent:Connect(function(player, index)
+	local success = PlayerDataManager.RemoveItemFromInventory(player, index)
+	if success then
+		sendFullUpdate(player)
+	end
+end)
+
+BulkDeleteEvent.OnServerEvent:Connect(function(player, indices)
+	if type(indices) ~= "table" or #indices == 0 then return end
+	table.sort(indices, function(a, b) return a > b end)
+	for _, index in ipairs(indices) do
+		PlayerDataManager.RemoveItemFromInventory(player, index)
+	end
+	sendFullUpdate(player)
+end)
+
+GetInventoryFunction.OnServerInvoke = function(player)
+	local data = PlayerDataManager.GetData(player)
+	if not data then return {} end
+	local inventoryCopy = {}
+	for i, item in ipairs(data.Inventory) do
+		inventoryCopy[i] = {
+			ItemName = item.ItemName,
+			Rarity = item.Rarity,
+			Description = item.Description,
+			Equipped = (data.EquippedIndex == i),
+			Quantity = item.Quantity or 1,
+			OriginalIndex = i,
+			IsCrafted = item.IsCrafted or false
+		}
+	end
+	return inventoryCopy
+end
+
+local GetInventoryForCraftingFunction = RemoteEventsFolder:WaitForChild("GetInventoryForCraftingFunction")
+GetInventoryForCraftingFunction.OnServerInvoke = function(player)
+	local data = PlayerDataManager.GetData(player)
+	if not data then return {} end
+	local groupedInventory = {}
+	for _, item in ipairs(data.Inventory) do
+		local key = item.ItemName .. "|" .. item.Rarity
+		groupedInventory[key] = (groupedInventory[key] or 0) + (item.Quantity or 1)
+	end
+	return groupedInventory
+end
+
+GetEquippedFunction.OnServerInvoke = function(player, targetPlayer)
+	local queryPlayer = targetPlayer or player
+	local data = PlayerDataManager.GetData(queryPlayer)
+	if not data then return nil end
+	if data.EquippedIndex and data.Inventory[data.EquippedIndex] then
+		local item = data.Inventory[data.EquippedIndex]
+		return {ItemName = item.ItemName, Rarity = item.Rarity, Description = item.Description, IsCrafted = item.IsCrafted or false}
+	end
+	return nil
+end
+
+print("[RNGServer] Initialized")
+]]></string>
+        </Properties>
+      </Item>
+      <Item class="ModuleScript" referent="12">
+        <Properties>
+          <string name="Name">TestFloatingSimple</string>
+          <string name="Source">--[[
+    Simple Floating Test
+    Run this to test the floating effect
+    Usage: In the command bar, run:
+    game.ServerScriptService.TestFloatingSimple:Test()
+]]
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local TestFloatingSimple = {}
+
+function TestFloatingSimple.Test(playerName)
+	-- Find the player
+	local player
+	if playerName then
+		player = Players:FindFirstChild(playerName)
+	else
+		-- Get the first player in the game
+		local allPlayers = Players:GetPlayers()
+		if #allPlayers &gt; 0 then
+			player = allPlayers[1]
+		end
+	end
+	
+	if not player then
+		warn("[TestFloatingSimple] No player found! Make sure you're in Play Mode.")
+		return nil
+	end
+	
+	local character = player.Character
+	if not character then
+		warn("[TestFloatingSimple] No character found for " .. player.Name .. "! Please spawn your character first.")
+		return nil
+	end
+	
+	local hrp = character:FindFirstChild("HumanoidRootPart")
+	if not hrp then
+		warn("[TestFloatingSimple] No HumanoidRootPart found!")
+		return nil
+	end
+	
+	print("[TestFloatingSimple] Starting floating test for " .. player.Name .. "...")
+	print("[TestFloatingSimple] You should float 3 studs above the ground.")
+	print("[TestFloatingSimple] Press SPACE to stop floating.")
+	
+	local connection
+	local isFloating = true
+	
+	connection = RunService.Heartbeat:Connect(function()
+		if not character.Parent or not isFloating then
+			connection:Disconnect()
+			return
+		end
+		
+		-- Get current HRP (in case it was replaced)
+		local currentHrp = character:FindFirstChild("HumanoidRootPart")
+		if not currentHrp then
+			connection:Disconnect()
+			return
+		end
+		
+		-- Raycast down to find ground
+		local rayParams = RaycastParams.new()
+		rayParams.FilterType = Enum.RaycastFilterType.Exclude
+		rayParams.FilterDescendantsInstances = {character}
+		
+		local rayResult = workspace:Raycast(
+			currentHrp.Position,
+			Vector3.new(0, -100, 0),
+			rayParams
+		)
+		
+		local groundY = rayResult and rayResult.Position.Y or 0
+		local targetY = groundY + 3
+		
+		-- Apply upward velocity
+		local velocityY = (targetY - currentHrp.Position.Y) * 10
+		currentHrp.AssemblyLinearVelocity = Vector3.new(
+			currentHrp.AssemblyLinearVelocity.X,
+			velocityY,
+			currentHrp.AssemblyLinearVelocity.Z
+		)
+	end)
+	
+	-- Listen for jump to stop
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if humanoid then
+		humanoid.Jumping:Connect(function()
+			isFloating = false
+			print("[TestFloatingSimple] Floating stopped!")
+		end)
+	end
+	
+	return connection
+end
+
+return TestFloatingSimple</string>
+        </Properties>
+      </Item>
+      <Item class="Script" referent="13">
+        <Properties>
+          <string name="Name">UpdateCraftedDescriptionsOnJoin</string>
+          <token name="RunContext">0</token>
+          <string name="Source"><![CDATA[-- UpdateCraftedDescriptionsOnJoin (Server Script)
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local CraftingRecipes = require(ReplicatedStorage:WaitForChild("CraftingRecipes"))
+local PlayerDataManager = require(script.Parent:WaitForChild("PlayerDataManager"))
+
+-- Build lookup table once
+local craftedItemDescriptions = {}
+for _, recipe in ipairs(CraftingRecipes.Recipes) do
+	local key = recipe.Result.Name .. "|" .. recipe.Result.Rarity
+	craftedItemDescriptions[key] = recipe.Result.Description
+end
+
+local function updatePlayerCraftedItems(player)
+	local data = PlayerDataManager.GetData(player)
+	if not data or not data.Inventory then return end
+
+	local updatedCount = 0
+	for _, item in ipairs(data.Inventory) do
+		if item.IsCrafted then
+			local key = item.ItemName .. "|" .. item.Rarity
+			local newDesc = craftedItemDescriptions[key]
+			if newDesc and item.Description ~= newDesc then
+				item.Description = newDesc
+				updatedCount += 1
+			end
+		end
+	end
+
+	if updatedCount > 0 then
+		PlayerDataManager.SaveData(player)
+	end
+end
+
+for _, player in Players:GetPlayers() do
+	updatePlayerCraftedItems(player)
+end
+
+Players.PlayerAdded:Connect(function(player)
+	task.wait(1)
+	updatePlayerCraftedItems(player)
+end)
+
+print("[UpdateCraftedDescriptionsOnJoin] Initialized")
+]]></string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="StarterPlayer" referent="14">
+      <Properties>
+        <string name="Name">StarterPlayer</string>
+      </Properties>
+      <Item class="StarterPlayerScripts" referent="15">
+        <Properties>
+          <string name="Name">StarterPlayerScripts</string>
+        </Properties>
+        <Item class="ModuleScript" referent="16">
+          <Properties>
+            <string name="Name">EquipEffects</string>
+            <string name="Source"><![CDATA[
+--[[
+    Equip Effects Module (Enhanced Atomic Model Version)
+    Tier-based nucleus + shells, aura rings, sounds, auto-scaling
+]]
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local EquipEffects = {}
+EquipEffects.ActiveEffects = {}
+EquipEffects.ActiveBuffs = {} -- Track active buffs per player
+
+---------------------------------------------------------------------
+-- ELECTRON COUNTS (fallback, used if RNGConfig doesn't have it)
+---------------------------------------------------------------------
+local ElectronCounts = {
+	Hydrogen = 1, Carbon = 6, Oxygen = 8, Nitrogen = 7,
+	Iron = 26, Copper = 29, Aluminum = 13, Silicon = 14,
+	Silver = 47, Titanium = 22, Chromium = 24, Nickel = 28,
+	Gold = 79, Platinum = 78, Palladium = 46, Rhodium = 45,
+	Uranium = 92, Plutonium = 94, Radium = 88, Thorium = 90,
+	Francium = 87, Astatine = 85, Californium = 98, Einsteinium = 99,
+	Oganesson = 118, Tennessine = 117, Moscovium = 115,
+	Ununennium = 119, Unbinilium = 120,
+	Antimatter = 200, DarkMatter = 250, Neutronium = 275, StrangeMatter = 300
+}
+
+---------------------------------------------------------------------
+-- ELEMENT CONFIG (if you use it elsewhere)
+---------------------------------------------------------------------
+local ElementEffects = {
+	-- your element-specific config if needed
+}
+
+---------------------------------------------------------------------
+-- RARITY MULTIPLIERS
+---------------------------------------------------------------------
+local RarityMultipliers = {
+	Common = {Size=1,Rate=1,Speed=1,Lifetime=1,Rings=1},
+	Uncommon = {Size=1.2,Rate=1.3,Speed=1.2,Lifetime=1.1,Rings=1},
+	Rare = {Size=1.5,Rate=1.6,Speed=1.4,Lifetime=1.2,Rings=2},
+	Epic = {Size=1.8,Rate=2,Speed=1.6,Lifetime=1.3,Rings=2},
+	Legendary = {Size=2.2,Rate=2.5,Speed=1.8,Lifetime=1.5,Rings=3},
+	Mythical = {Size=2.8,Rate=3,Speed=2,Lifetime=1.8,Rings=3},
+	Divine = {Size=3.5,Rate=3.5,Speed=2.2,Lifetime=2,Rings=4},
+	Exotic = {Size=4,Rate=4,Speed=2.5,Lifetime=2.2,Rings=4},
+	Celestial = {Size=6,Rate=5,Speed=3,Lifetime=2.5,Rings=5},
+}
+
+---------------------------------------------------------------------
+-- BOHR SHELL CAPACITIES
+---------------------------------------------------------------------
+local ShellCapacities = {2, 8, 18, 32, 50, 72, 98, 128, 162, 200}
+
+---------------------------------------------------------------------
+-- PERFORMANCE AUTO-SCALING
+---------------------------------------------------------------------
+local function getPerformanceScale()
+	local fps = 1 / RunService.RenderStepped:Wait()
+	if fps < 30 then return 0.5 end
+	if fps < 45 then return 0.75 end
+	return 1
+end
+
+---------------------------------------------------------------------
+-- UTILITY: Ensure attachment exists
+---------------------------------------------------------------------
+local function getOrCreateMainAttachment(hrp)
+	local existing = hrp:FindFirstChild("MainEffectAttachment")
+	if existing then return existing end
+
+	local att = Instance.new("Attachment")
+	att.Name = "MainEffectAttachment"
+	att.Parent = hrp
+	return att
+end
+
+---------------------------------------------------------------------
+-- PARTICLES (stub – plug your existing particle logic here)
+---------------------------------------------------------------------
+local function createElementParticles(character, elementName, rarityName, rarityColor)
+	-- put your existing particle emitter setup here if you had one
+	return nil
+end
+
+---------------------------------------------------------------------
+-- NEW HYBRID NUCLEUS (tier-based)
+---------------------------------------------------------------------
+local function createNucleus(character, elementName, rarityColor, rarityName)
+	local hrp = character:FindFirstChild("HumanoidRootPart")
+	if not hrp then return {} end
+
+	local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+	local electrons = RNGConfig.GetElectronCount(elementName)
+	if electrons == 0 then
+		electrons = ElectronCounts[elementName] or 4
+	end
+
+	-- Determine tier from electron count
+	local tier
+	if electrons <= 50 then tier = 1
+	elseif electrons <= 150 then tier = 2
+	elseif electrons <= 300 then tier = 3
+	elseif electrons <= 600 then tier = 4
+	else tier = 5 end
+
+	local coreSize = 1 + tier * 0.4
+	local nucleonCount = 6 + tier * 6
+
+	local nucleusCore = Instance.new("Part")
+	nucleusCore.Name = "NucleusCore"
+	nucleusCore.Shape = Enum.PartType.Ball
+	nucleusCore.Size = Vector3.new(coreSize, coreSize, coreSize)
+	nucleusCore.Material = Enum.Material.Neon
+	nucleusCore.Color = rarityColor
+	nucleusCore.Transparency = math.clamp(0.45 - tier * 0.03, 0.1, 0.6)
+	nucleusCore.CanCollide = false
+	nucleusCore.Massless = true
+	nucleusCore.Parent = character
+
+	local att0 = Instance.new("Attachment", hrp)
+	local att1 = Instance.new("Attachment", nucleusCore)
+
+	local align = Instance.new("AlignPosition")
+	align.Attachment0 = att1
+	align.Attachment1 = att0
+	align.MaxForce = math.huge
+	align.Responsiveness = 60 + tier * 20
+	align.Parent = nucleusCore
+
+	local nucleons = {}
+
+	for i = 1, nucleonCount do
+		local p = Instance.new("Part")
+		p.Name = "Nucleon_" .. i
+		p.Shape = Enum.PartType.Ball
+		p.Size = Vector3.new(0.25 + tier * 0.05, 0.25 + tier * 0.05, 0.25 + tier * 0.05)
+		p.Material = Enum.Material.Neon
+		p.Color = rarityColor:Lerp(Color3.new(1,1,1), 0.3)
+		p.Transparency = 0.55
+		p.CanCollide = false
+		p.Massless = true
+		p.Parent = character
+
+		local a0 = Instance.new("Attachment", nucleusCore)
+		local a1 = Instance.new("Attachment", p)
+
+		local ap = Instance.new("AlignPosition")
+		ap.Attachment0 = a1
+		ap.Attachment1 = a0
+		ap.MaxForce = math.huge
+		ap.Responsiveness = 40 + tier * 10
+		ap.Parent = p
+
+		local angle = (i / nucleonCount) * math.pi * 2
+		local radius = 0.6 + tier * 0.2
+
+		task.spawn(function()
+			while p.Parent do
+				local t = tick() * (2 + tier * 0.5)
+				local chaos = (tier >= 4) and math.sin(t * 4 + i) * 0.3 or 0
+
+				a0.Position = Vector3.new(
+					math.cos(t + angle) * (radius + chaos),
+					math.sin(t * 1.5 + angle) * (0.3 + chaos),
+					math.sin(t + angle) * (radius + chaos)
+				)
+
+				task.wait()
+			end
+		end)
+
+		table.insert(nucleons, p)
+	end
+
+	return {Core = nucleusCore, Nucleons = nucleons}
+end
+
+---------------------------------------------------------------------
+-- NEW BOHR ELECTRON SHELLS (tier-based)
+---------------------------------------------------------------------
+local function createElectronShells(character, elementName, rarityColor, rarityName)
+	local hrp = character:FindFirstChild("HumanoidRootPart")
+	if not hrp then return {} end
+
+	local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+	local trueElectrons = RNGConfig.GetElectronCount(elementName)
+	if trueElectrons == 0 then
+		trueElectrons = ElectronCounts[elementName] or 4
+	end
+
+	-- Determine tier
+	local tier
+	if trueElectrons <= 50 then tier = 1
+	elseif trueElectrons <= 150 then tier = 2
+	elseif trueElectrons <= 300 then tier = 3
+	elseif trueElectrons <= 600 then tier = 4
+	else tier = 5 end
+
+	local tierElectronMap = {
+		[1] = 30,
+		[2] = 70,
+		[3] = 140,
+		[4] = 200,
+		[5] = 260,
+	}
+
+	local electrons = tierElectronMap[tier]
+	local scale = getPerformanceScale()
+	electrons = math.floor(electrons * scale)
+
+	local shells = {}
+	local remaining = electrons
+	local shellIndex = 1
+
+	while remaining > 0 and shellIndex <= #ShellCapacities do
+		local capacity = ShellCapacities[shellIndex]
+		local count = math.min(remaining, capacity)
+		remaining -= count
+
+		local radius = 2 + shellIndex * (1.2 + tier * 0.3)
+		local speed = 1 + shellIndex * (0.5 + tier * 0.2)
+
+		local shellParts = {}
+
+		for i = 1, count do
+			local e = Instance.new("Part")
+			e.Name = "Electron_" .. shellIndex .. "_" .. i
+			e.Shape = Enum.PartType.Ball
+			e.Size = Vector3.new(0.4 + tier * 0.05, 0.4 + tier * 0.05, 0.4 + tier * 0.05)
+			e.Material = Enum.Material.Neon
+			e.Color = rarityColor
+			e.Transparency = 0.45
+			e.CanCollide = false
+			e.Massless = true
+			e.Parent = character
+
+			local a0 = Instance.new("Attachment", hrp)
+			local a1 = Instance.new("Attachment", e)
+
+			local ap = Instance.new("AlignPosition")
+			ap.Attachment0 = a1
+			ap.Attachment1 = a0
+			ap.MaxForce = math.huge
+			ap.Responsiveness = 50 + tier * 10
+			ap.Parent = e
+
+			local angleOffset = (i / count) * math.pi * 2
+			local tiltAmount = 20 * tier
+			local shellTilt = CFrame.Angles(
+				math.rad(tiltAmount * shellIndex),
+				math.rad(tiltAmount * 0.8),
+				math.rad(tiltAmount * 1.2)
+			)
+
+			task.spawn(function()
+				while e.Parent do
+					local t = tick() * speed
+					local wobble = (tier >= 4) and math.sin(t * 3 + i) * 0.4 or 0
+
+					local baseAngle = t + angleOffset
+					local localOffset = Vector3.new(
+						math.cos(baseAngle) * (radius + wobble),
+						0,
+						math.sin(baseAngle) * (radius + wobble)
+					)
+
+					local tiltedOffset = shellTilt:VectorToWorldSpace(localOffset)
+
+					a0.Position = Vector3.new(
+						tiltedOffset.X,
+						1.5 + tiltedOffset.Y,
+						tiltedOffset.Z
+					)
+
+					task.wait()
+				end
+			end)
+
+			table.insert(shellParts, e)
+		end
+
+		table.insert(shells, shellParts)
+		shellIndex += 1
+	end
+
+	return shells
+end
+
+---------------------------------------------------------------------
+-- AURA SYSTEM
+---------------------------------------------------------------------
+local function createAuraRings(character, rarityName, rarityColor)
+	local hrp = character:FindFirstChild("HumanoidRootPart")
+	if not hrp then return {} end
+
+	local rarity = RarityMultipliers[rarityName] or RarityMultipliers.Common
+	local scale = getPerformanceScale()
+	local effects = {}
+
+	local mainAttachment = getOrCreateMainAttachment(hrp)
+
+	local gas = Instance.new("ParticleEmitter")
+	gas.Name = "AtomicGas"
+	gas.Color = ColorSequence.new(rarityColor)
+	gas.LightEmission = 0.3
+	gas.Size = NumberSequence.new{
+		NumberSequenceKeypoint.new(0, 1.5 * rarity.Size),
+		NumberSequenceKeypoint.new(1, 3 * rarity.Size)
+	}
+	gas.Transparency = NumberSequence.new{
+		NumberSequenceKeypoint.new(0, 0.82),
+		NumberSequenceKeypoint.new(1, 1)
+	}
+	gas.Rate = 40 * rarity.Rate * scale
+	gas.Lifetime = NumberRange.new(0.75 * rarity.Lifetime, 1.25 * rarity.Lifetime)
+	gas.Speed = NumberRange.new(1, 3)
+	gas.Rotation = NumberRange.new(0, 360)
+	gas.RotSpeed = NumberRange.new(-30, 30)
+	gas.SpreadAngle = Vector2.new(360, 360)
+	gas.Parent = mainAttachment
+	table.insert(effects, gas)
+
+	if rarity.Rings >= 3 then
+		local plasma = Instance.new("ParticleEmitter")
+		plasma.Name = "PlasmaStorm"
+		plasma.Color = ColorSequence.new{
+			ColorSequenceKeypoint.new(0, rarityColor),
+			ColorSequenceKeypoint.new(1, rarityColor:Lerp(Color3.new(1,1,1), 0.5))
+		}
+		plasma.LightEmission = 0.3
+		plasma.Size = NumberSequence.new{
+			NumberSequenceKeypoint.new(0, 0.8 * rarity.Size),
+			NumberSequenceKeypoint.new(1, 0)
+		}
+		plasma.Transparency = NumberSequence.new{
+			NumberSequenceKeypoint.new(0, 0.48),
+			NumberSequenceKeypoint.new(1, 1)
+		}
+		plasma.Rate = 60 * rarity.Rate * scale
+		plasma.Lifetime = NumberRange.new(0.25, 0.5)
+		plasma.Speed = NumberRange.new(6, 10 * rarity.Speed)
+		plasma.SpreadAngle = Vector2.new(360, 360)
+		plasma.Parent = mainAttachment
+		table.insert(effects, plasma)
+	end
+
+	task.spawn(function()
+		local baseRate = gas.Rate
+		while gas.Parent do
+			local pulse = (math.sin(tick() * 2) + 1) / 2
+			gas.Rate = baseRate * (0.6 + pulse * 0.8)
+			task.wait(0.1)
+		end
+	end)
+	-- Celestial-exclusive directional energy burst
+	if rarityName == "Celestial" then
+		task.spawn(function()
+			while mainAttachment.Parent do
+				local beam = Instance.new("Part")
+				beam.Name = "EnergyBurst"
+				beam.Anchored = true
+				beam.CanCollide = false
+				beam.Material = Enum.Material.Neon
+				beam.Color = rarityColor
+				beam.Transparency = 0.3
+				beam.Size = Vector3.new(0.4, 0.4, 4)
+				local randomAngle = CFrame.Angles(
+					math.rad(math.random(-20, 20)),
+					math.rad(math.random(-180, 180)),
+					0
+				)
+				beam.CFrame = hrp.CFrame * randomAngle * CFrame.new(0, 0, -2)
+
+				beam.Parent = workspace
+
+				local tween = TweenService:Create(
+					beam,
+					TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+					{
+						Size = Vector3.new(0.4, 0.4, 30),
+						Transparency = 1,
+						CFrame = hrp.CFrame * CFrame.new(0, 0, -20)
+					}
+				)
+
+				tween:Play()
+				tween.Completed:Connect(function()
+					beam:Destroy()
+				end)
+
+				task.wait(2.5) -- burst interval
+			end
+		end)
+	end
+
+	if rarity.Rings >= 4 then
+		task.spawn(function()
+			while mainAttachment.Parent do
+				local shock = Instance.new("Part")
+				shock.Shape = Enum.PartType.Cylinder
+				shock.Size = Vector3.new(1, 0.2, 1)
+				shock.Material = Enum.Material.Neon
+				shock.Color = rarityColor
+				shock.Transparency = 0.84
+				shock.CanCollide = false
+				shock.Anchored = true
+				shock.CFrame = hrp.CFrame * CFrame.Angles(math.rad(90),0,0)
+				shock.Parent = workspace
+
+				local tween = TweenService:Create(
+					shock,
+					TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+					{Size = Vector3.new(20, 0.2, 20), Transparency = 1}
+				)
+
+				tween:Play()
+				tween.Completed:Connect(function() shock:Destroy() end)
+				task.wait(3 / rarity.Speed)
+			end
+		end)
+	end
+
+	return effects
+end
+
+---------------------------------------------------------------------
+-- APPLY BUFFS (Roll Speed and Luck)
+---------------------------------------------------------------------
+local function applyBuffs(player, elementData)
+	local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+	local rarityName = elementData.Rarity
+
+	local rarityData = nil
+	for _, r in ipairs(RNGConfig.Rarities) do
+		if r.Name == rarityName then
+			rarityData = r
+			break
+		end
+	end
+
+	if not rarityData then return end
+
+	EquipEffects.ActiveBuffs[player.UserId] = {
+		RollSpeedBuff = rarityData.RollSpeedBuff or 0,
+		LuckBuff = rarityData.LuckBuff or 1,
+		Rarity = rarityName
+	}
+
+	print("[EquipEffects] Applied buffs for " .. player.Name .. ": RollSpeed=" .. (rarityData.RollSpeedBuff or 0) .. ", Luck=" .. (rarityData.LuckBuff or 1))
+end
+
+---------------------------------------------------------------------
+-- REMOVE BUFFS
+---------------------------------------------------------------------
+local function removeBuffs(player)
+	EquipEffects.ActiveBuffs[player.UserId] = nil
+	print("[EquipEffects] Removed buffs for " .. player.Name)
+end
+
+---------------------------------------------------------------------
+-- GET ACTIVE BUFFS
+---------------------------------------------------------------------
+function EquipEffects.GetActiveBuffs(player)
+	return EquipEffects.ActiveBuffs[player.UserId]
+end
+
+---------------------------------------------------------------------
+-- EQUIP ELEMENT
+---------------------------------------------------------------------
+function EquipEffects.EquipElement(player, elementData)
+	local character = player.Character
+	if not character then return false end
+
+	-- Only unequip if this is the local player's effects
+	if player == Players.LocalPlayer then
+		EquipEffects.UnequipElement(player)
+	else
+		if EquipEffects.ActiveEffects[player.UserId] then
+			local effects = EquipEffects.ActiveEffects[player.UserId]
+			local function destroy(v)
+				if typeof(v) == "Instance" then v:Destroy() end
+			end
+			if effects.Particles then destroy(effects.Particles) end
+			if effects.Nucleus then
+				destroy(effects.Nucleus.Core)
+				for _, n in ipairs(effects.Nucleus.Nucleons) do destroy(n) end
+			end
+			if effects.Shells then
+				for _, shell in ipairs(effects.Shells) do
+					for _, e in ipairs(shell) do destroy(e) end
+				end
+			end
+			if effects.Rings then
+				for _, r in ipairs(effects.Rings) do destroy(r) end
+			end
+			EquipEffects.ActiveEffects[player.UserId] = nil
+		end
+	end
+
+	local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+	local rarityColor = Color3.new(1,1,1)
+	local rarityName = "Common"
+
+	for _, r in ipairs(RNGConfig.Rarities) do
+		if r.Name == elementData.Rarity then
+			rarityColor = r.Color
+			rarityName = r.Name
+			break
+		end
+	end
+
+	if player == Players.LocalPlayer and elementData.IsCrafted then
+		applyBuffs(player, elementData)
+	end
+
+	local effects = {
+		Particles = createElementParticles(character, elementData.ItemName, rarityName, rarityColor),
+		Nucleus = createNucleus(character, elementData.ItemName, rarityColor, rarityName),
+		Shells = createElectronShells(character, elementData.ItemName, rarityColor, rarityName),
+		Rings = createAuraRings(character, rarityName, rarityColor),
+	}
+
+	EquipEffects.ActiveEffects[player.UserId] = effects
+	return true
+end
+
+---------------------------------------------------------------------
+-- UNEQUIP ELEMENT
+---------------------------------------------------------------------
+function EquipEffects.UnequipElement(player)
+	local effects = EquipEffects.ActiveEffects[player.UserId]
+	if not effects then return end
+
+	removeBuffs(player)
+
+	local function destroy(v)
+		if typeof(v) == "Instance" then v:Destroy() end
+	end
+
+	if effects.Particles then destroy(effects.Particles) end
+	if effects.Nucleus then
+		destroy(effects.Nucleus.Core)
+		for _, n in ipairs(effects.Nucleus.Nucleons) do destroy(n) end
+	end
+	if effects.Shells then
+		for _, shell in ipairs(effects.Shells) do
+			for _, e in ipairs(shell) do destroy(e) end
+		end
+	end
+	if effects.Rings then
+		for _, r in ipairs(effects.Rings) do destroy(r) end
+	end
+
+	EquipEffects.ActiveEffects[player.UserId] = nil
+end
+
+---------------------------------------------------------------------
+-- CHARACTER ADDED
+---------------------------------------------------------------------
+function EquipEffects.OnCharacterAdded(player, character)
+	task.wait(1)
+	local folder = ReplicatedStorage:WaitForChild("RemoteEvents")
+	local getEquipped = folder:FindFirstChild("GetEquippedFunction")
+
+	if getEquipped then
+		local ok, item = pcall(function()
+			return getEquipped:InvokeServer()
+		end)
+
+		if ok and item then
+			EquipEffects.EquipElement(player, item)
+		end
+	end
+end
+
+return EquipEffects
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="17">
+          <Properties>
+            <string name="Name">EquipEffectsVisualizer.local</string>
+            <string name="Source">--[[
+	Equip Effects Visualizer
+	Creates equip effects on other players' characters
+	This script runs on each client and shows effects for all players
+]]
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local RemoteEventsFolder = ReplicatedStorage:WaitForChild("RemoteEvents")
+local EquipEffectsEvent = RemoteEventsFolder:WaitForChild("EquipEffectsEvent")
+
+-- Require the EquipEffects module to use its effect creation functions
+local EquipEffects = require(script.Parent:WaitForChild("EquipEffects"))
+
+-- Track effects for each player
+local activeEffects = {}
+
+-- Create effects on a player's character
+local function createEffectsOnPlayer(player, itemData)
+	local character = player.Character
+	if not character then return end
+
+	-- Remove existing effects for this player
+	if activeEffects[player.UserId] then
+		local effects = EquipEffects.ActiveEffects[player.UserId]
+		if effects then
+			local function destroy(v)
+				if typeof(v) == "Instance" then v:Destroy() end
+			end
+			if effects.Particles then destroy(effects.Particles) end
+			if effects.Nucleus then
+				destroy(effects.Nucleus.Core)
+				for _, n in ipairs(effects.Nucleus.Nucleons) do destroy(n) end
+			end
+			if effects.Shells then
+				for _, shell in ipairs(effects.Shells) do
+					for _, e in ipairs(shell) do destroy(e) end
+				end
+			end
+			if effects.Rings then
+				for _, r in ipairs(effects.Rings) do destroy(r) end
+			end
+			EquipEffects.ActiveEffects[player.UserId] = nil
+		end
+	end
+
+	-- Create new effects
+	EquipEffects.EquipElement(player, itemData)
+	activeEffects[player.UserId] = itemData
+end
+
+-- Handle equip effects event
+EquipEffectsEvent.OnClientEvent:Connect(function(data)
+	local player = data.Player
+	local action = data.Action
+	local itemData = data.ItemData
+
+	if action == "Equip" then
+		-- Don't create effects on our own character (handled by RNGClient)
+		if player ~= Players.LocalPlayer then
+			createEffectsOnPlayer(player, itemData)
+		end
+	elseif action == "Unequip" then
+		if player ~= Players.LocalPlayer then
+			if activeEffects[player.UserId] then
+				local effects = EquipEffects.ActiveEffects[player.UserId]
+				if effects then
+					local function destroy(v)
+						if typeof(v) == "Instance" then v:Destroy() end
+					end
+					if effects.Particles then destroy(effects.Particles) end
+					if effects.Nucleus then
+						destroy(effects.Nucleus.Core)
+						for _, n in ipairs(effects.Nucleus.Nucleons) do destroy(n) end
+					end
+					if effects.Shells then
+						for _, shell in ipairs(effects.Shells) do
+							for _, e in ipairs(shell) do destroy(e) end
+						end
+					end
+					if effects.Rings then
+						for _, r in ipairs(effects.Rings) do destroy(r) end
+					end
+					EquipEffects.ActiveEffects[player.UserId] = nil
+				end
+				activeEffects[player.UserId] = nil
+			end
+		end
+	end
+end)
+
+-- Handle player joining (show their equipped item if they have one)
+Players.PlayerAdded:Connect(function(player)
+	task.wait(2) -- Wait for character to load
+
+	if player ~= Players.LocalPlayer then
+		-- Request equipped item from server
+		local GetEquippedFunction = RemoteEventsFolder:FindFirstChild("GetEquippedFunction")
+		if GetEquippedFunction then
+			local success, equippedItem = pcall(function()
+				return GetEquippedFunction:InvokeServer(player)
+			end)
+
+			if success and equippedItem then
+				createEffectsOnPlayer(player, equippedItem)
+			end
+		end
+	end
+end)
+
+-- Handle player leaving
+Players.PlayerRemoving:Connect(function(player)
+	if activeEffects[player.UserId] then
+		activeEffects[player.UserId] = nil
+	end
+end)
+
+-- Handle character respawn for existing players
+for _, player in ipairs(Players:GetPlayers()) do
+	if player ~= Players.LocalPlayer then
+		player.CharacterAdded:Connect(function(character)
+			task.wait(1)
+			if activeEffects[player.UserId] then
+				createEffectsOnPlayer(player, activeEffects[player.UserId])
+			end
+		end)
+	end
+end
+
+print("[EquipEffectsVisualizer] Initialized")</string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="18">
+          <Properties>
+            <string name="Name">MoneyDisplay.local</string>
+            <string name="Source">--[[
+	Money Display
+	Shows the player's current money on screen
+]]
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Wait for RemoteEvents
+local RemoteEventsFolder = ReplicatedStorage:WaitForChild("RemoteEvents")
+local MoneyUpdateEvent = RemoteEventsFolder:WaitForChild("MoneyUpdateEvent")
+
+-- Create money display GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MoneyDisplayGui"
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screenGui.DisplayOrder = 50 -- Show above other GUIs
+screenGui.Parent = playerGui
+
+-- Money frame
+local moneyFrame = Instance.new("Frame")
+moneyFrame.Name = "MoneyFrame"
+moneyFrame.Size = UDim2.new(0, 200, 0, 50)
+moneyFrame.Position = UDim2.new(1, -210, 0, 10)
+moneyFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+moneyFrame.BorderSizePixel = 0
+moneyFrame.Parent = screenGui
+
+local moneyCorner = Instance.new("UICorner")
+moneyCorner.CornerRadius = UDim.new(0, 10)
+moneyCorner.Parent = moneyFrame
+
+local moneyStroke = Instance.new("UIStroke")
+moneyStroke.Color = Color3.fromRGB(255, 215, 0) -- Gold color
+moneyStroke.Thickness = 2
+moneyStroke.Parent = moneyFrame
+
+-- Money icon
+local moneyIcon = Instance.new("TextLabel")
+moneyIcon.Size = UDim2.new(0, 40, 1, 0)
+moneyIcon.BackgroundTransparency = 1
+moneyIcon.Text = "💰"
+moneyIcon.TextSize = 24
+moneyIcon.Font = Enum.Font.GothamBold
+moneyIcon.Parent = moneyFrame
+
+-- Money label
+local moneyLabel = Instance.new("TextLabel")
+moneyLabel.Name = "MoneyLabel"
+moneyLabel.Size = UDim2.new(1, -50, 1, 0)
+moneyLabel.Position = UDim2.new(0, 40, 0, 0)
+moneyLabel.BackgroundTransparency = 1
+moneyLabel.Text = "$0 (+$1/s)"
+moneyLabel.TextColor3 = Color3.fromRGB(255, 215, 0)
+moneyLabel.TextSize = 18
+moneyLabel.Font = Enum.Font.GothamBold
+moneyLabel.TextXAlignment = Enum.TextXAlignment.Left
+moneyLabel.Parent = moneyFrame
+
+-- Track current income rate
+local currentIncomeRate = 1
+
+-- Update money display
+local function updateMoneyDisplay(amount, incomeRate)
+	if incomeRate then
+		currentIncomeRate = incomeRate
+	end
+	moneyLabel.Text = "$" .. tostring(amount) .. " (+$" .. tostring(currentIncomeRate) .. "/s)"
+end
+
+-- Listen for money updates from server
+MoneyUpdateEvent.OnClientEvent:Connect(function(data)
+	if data and data.Total ~= nil then
+		updateMoneyDisplay(data.Total, data.IncomeRate)
+	end
+end)
+
+-- Request initial money from server
+task.spawn(function()
+	task.wait(1)
+	local GetMoneyFunction = RemoteEventsFolder:FindFirstChild("GetMoneyFunction")
+	if GetMoneyFunction then
+		local success, currentMoney = pcall(function()
+			return GetMoneyFunction:InvokeServer()
+		end)
+		if success and currentMoney then
+			updateMoneyDisplay(currentMoney)
+		end
+	end
+end)
+
+print("[MoneyDisplay] Initialized")</string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="19">
+          <Properties>
+            <string name="Name">RNGClient.local</string>
+            <string name="Source">--[[
+	RNG Client Script
+	Handles client-side interactions and UI updates
+]]
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Wait for RemoteEvents to be created by server
+local RemoteEventsFolder = ReplicatedStorage:WaitForChild("RemoteEvents")
+local RollEvent = RemoteEventsFolder:WaitForChild("RollEvent")
+local EquipEvent = RemoteEventsFolder:WaitForChild("EquipEvent")
+local DeleteEvent = RemoteEventsFolder:WaitForChild("DeleteEvent")
+local BulkDeleteEvent = RemoteEventsFolder:WaitForChild("BulkDeleteEvent")
+local InventoryUpdateEvent = RemoteEventsFolder:WaitForChild("InventoryUpdateEvent")
+local GetInventoryFunction = RemoteEventsFolder:WaitForChild("GetInventoryFunction")
+local CraftingEvent = RemoteEventsFolder:WaitForChild("CraftingEvent")
+local GetInventoryForCraftingFunction = RemoteEventsFolder:WaitForChild("GetInventoryForCraftingFunction")
+-- Note: OpenPedestalSelection is set up below once the server creates it
+
+-- Require modules
+local UIHandler = require(script.Parent.UIHandler)
+local RollEffects = require(script.Parent.RollEffects)
+local EquipEffects = require(script.Parent.EquipEffects)
+local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+local CraftingRecipes = require(ReplicatedStorage:WaitForChild("CraftingRecipes"))
+
+-- Create UI
+local gui = UIHandler.CreateUI(playerGui)
+local mainFrame = gui:WaitForChild("MainFrame")
+local rollButton = mainFrame:WaitForChild("RollButton")
+local inventoryButton = mainFrame:WaitForChild("InventoryButton")
+local collectionButton = mainFrame:WaitForChild("CollectionButton")
+local craftingButton = mainFrame:WaitForChild("CraftingButton")
+local craftedInventoryButton = mainFrame:WaitForChild("CraftedInventoryButton")
+local autoRollButton = mainFrame:WaitForChild("AutoRollButton")
+
+-- State
+local isRolling = false
+local lastRollTime = 0
+local cachedInventory = {}
+local playerStats = {
+	TotalRolls = 0,
+	Currency = 0
+}
+local isEquipping = false -- Prevent multiple equip clicks
+
+-- Auto roll state
+local isAutoRolling = false
+local autoRollInterval = 0 -- seconds between auto rolls (0 = as fast as cooldown allows)
+local autoRollConnection = nil
+
+-- Get rarity index
+local function getRarityIndex(rarityName)
+	for i, rarity in ipairs(RNGConfig.Rarities) do
+		if rarity.Name == rarityName then
+			return i
+		end
+	end
+	return 1
+end
+
+-- Auto roll function
+local function startAutoRoll()
+	if isAutoRolling then return end
+	isAutoRolling = true
+	UIHandler.SetAutoRollState(gui, true)
+
+	autoRollConnection = task.spawn(function()
+		while isAutoRolling do
+			-- Check if we can roll
+			local activeBuffs = EquipEffects.GetActiveBuffs(player)
+			local rollSpeedBuff = activeBuffs and activeBuffs.RollSpeedBuff or 0
+			local effectiveCooldown = RNGConfig.RollCooldown * (1 - rollSpeedBuff)
+			
+			local currentTime = tick()
+			local timeSinceLastRoll = currentTime - lastRollTime
+
+			if timeSinceLastRoll &gt;= effectiveCooldown then
+				-- Perform roll
+				RollEvent:FireServer()
+				-- Wait for the roll to complete
+				task.wait(0.5)
+			else
+				-- Wait until cooldown is over
+				local waitTime = effectiveCooldown - timeSinceLastRoll
+				task.wait(waitTime)
+			end
+
+			-- Wait for the auto roll interval
+			task.wait(autoRollInterval)
+		end
+	end)
+end
+
+local function stopAutoRoll()
+	isAutoRolling = false
+	UIHandler.SetAutoRollState(gui, false)
+	if autoRollConnection then
+		autoRollConnection = nil
+	end
+end
+
+local function toggleAutoRoll()
+	if isAutoRolling then
+		stopAutoRoll()
+	else
+		startAutoRoll()
+	end
+end
+
+-- Handle roll button click
+rollButton.MouseButton1Click:Connect(function()
+	if isRolling then return end
+
+	-- Check cooldown with roll speed buff
+	local activeBuffs = EquipEffects.GetActiveBuffs(player)
+	local rollSpeedBuff = activeBuffs and activeBuffs.RollSpeedBuff or 0
+	local effectiveCooldown = RNGConfig.RollCooldown * (1 - rollSpeedBuff)
+	
+	local currentTime = tick()
+	local timeSinceLastRoll = currentTime - lastRollTime
+
+	if timeSinceLastRoll &lt; effectiveCooldown then
+		local timeRemaining = effectiveCooldown - timeSinceLastRoll
+		UIHandler.UpdateCooldown(gui, timeRemaining)
+		return
+	end
+
+	-- Set rolling state
+	isRolling = true
+	UIHandler.SetRollButtonEnabled(gui, false)
+
+	-- Request roll from server
+	RollEvent:FireServer()
+end)
+
+-- Handle roll response
+RollEvent.OnClientEvent:Connect(function(response)
+	if response.Broadcast then
+		-- Show broadcast for other players' rare rolls
+		UIHandler.ShowBroadcast(gui, response.PlayerName, response.Result)
+	elseif response.Success then
+		-- Update UI with result
+		UIHandler.UpdateResult(gui, response.Result)
+
+		-- Play effects
+		local rarityIndex = getRarityIndex(response.Result.Rarity)
+		RollEffects.PlayRollEffects(player, response.Result.Rarity, response.Result.RarityColor, rarityIndex)
+
+		-- Update state
+		lastRollTime = tick()
+
+		-- Start cooldown timer with roll speed buff
+		local activeBuffs = EquipEffects.GetActiveBuffs(player)
+		local rollSpeedBuff = activeBuffs and activeBuffs.RollSpeedBuff or 0
+		local effectiveCooldown = RNGConfig.RollCooldown * (1 - rollSpeedBuff)
+		
+		task.spawn(function()
+			for i = effectiveCooldown, 0, -0.1 do
+				UIHandler.UpdateCooldown(gui, i)
+				task.wait(0.1)
+			end
+			UIHandler.UpdateCooldown(gui, 0)
+		end)
+
+		-- Re-enable button after a short delay
+		task.wait(0.5)
+		isRolling = false
+		UIHandler.SetRollButtonEnabled(gui, true)
+	else
+		-- Show error message
+		UIHandler.UpdateCooldown(gui, 0)
+		warn("Roll failed: " .. (response.Message or "Unknown error"))
+
+		isRolling = false
+		UIHandler.SetRollButtonEnabled(gui, true)
+	end
+end)
+
+-- Handle Pedestal UI (deferred so we don't block script startup)
+task.spawn(function()
+	local OpenPedestalSelectionEvent = RemoteEventsFolder:WaitForChild("OpenPedestalSelection", 30)
+	if not OpenPedestalSelectionEvent then
+		warn("[RNGClient] OpenPedestalSelection event not found after 30s!")
+		return
+	end
+	OpenPedestalSelectionEvent.OnClientEvent:Connect(function(itemStand, craftedItems)
+		UIHandler.CreatePedestalSelectionUI(playerGui, craftedItems, itemStand)
+	end)
+end)
+
+-- Create inventory UI for crafted items
+local function createInventoryUIForCrafted(playerGui, inventory)
+	local invGui = Instance.new("ScreenGui")
+	invGui.Name = "CraftedInventoryGui"
+	invGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	invGui.DisplayOrder = 100
+	invGui.Parent = playerGui
+
+	-- Inventory frame (responsive for mobile)
+	local invFrame = Instance.new("Frame")
+	invFrame.Name = "InventoryFrame"
+	invFrame.Size = UDim2.new(0.9, 0, 0.8, 0)
+	invFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	invFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+	invFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+	invFrame.BorderSizePixel = 0
+	invFrame.Active = false -- Don't block clicks on transparent areas
+	invFrame.Parent = invGui
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 15)
+	corner.Parent = invFrame
+
+	-- Title (responsive for mobile)
+	local title = Instance.new("TextLabel")
+	title.Size = UDim2.new(1, -70, 0, 50)
+	title.Position = UDim2.new(0, 10, 0, 10)
+	title.BackgroundTransparency = 1
+	title.Text = "CRAFTED ITEMS"
+	title.TextColor3 = Color3.fromRGB(200, 100, 200)
+	title.TextSize = 20
+	title.Font = Enum.Font.GothamBold
+	title.Parent = invFrame
+
+	-- Close button (larger for mobile)
+	local closeButton = Instance.new("TextButton")
+	closeButton.Size = UDim2.new(0, 60, 0, 60)
+	closeButton.Position = UDim2.new(1, -70, 0, 10)
+	closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+	closeButton.Text = "✕"
+	closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	closeButton.TextSize = 30
+	closeButton.Font = Enum.Font.GothamBold
+	closeButton.Parent = invFrame
+
+	local closeCorner = Instance.new("UICorner")
+	closeCorner.CornerRadius = UDim.new(0, 8)
+	closeCorner.Parent = closeButton
+
+	-- Scroll frame for items (responsive for mobile)
+	local scrollFrame = Instance.new("ScrollingFrame")
+	scrollFrame.Size = UDim2.new(1, -20, 1, -80)
+	scrollFrame.Position = UDim2.new(0, 10, 0, 70)
+	scrollFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+	scrollFrame.BorderSizePixel = 0
+	scrollFrame.ScrollBarThickness = 10
+	scrollFrame.Parent = invFrame
+
+	local scrollCorner = Instance.new("UICorner")
+	scrollCorner.CornerRadius = UDim.new(0, 10)
+	scrollCorner.Parent = scrollFrame
+
+	local listLayout = Instance.new("UIListLayout")
+	listLayout.Padding = UDim.new(0, 5)
+	listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	listLayout.Parent = scrollFrame
+
+	-- Close button functionality
+	closeButton.MouseButton1Click:Connect(function()
+		invGui:Destroy()
+	end)
+
+	-- Track selected items
+	local selectedItems = {}
+	local itemFrames = {}
+
+	-- Function to display items
+	local function displayItems(itemsToDisplay)
+		print("[CraftedInventory] displayItems called with " .. #itemsToDisplay .. " items")
+		-- Check if scrollFrame still exists
+		if not scrollFrame or not scrollFrame.Parent then
+			print("[CraftedInventory] scrollFrame is invalid")
+			return
+		end
+		-- Clear existing items
+		for _, child in ipairs(scrollFrame:GetChildren()) do
+			if child:IsA("Frame") or child:IsA("TextLabel") then
+				child:Destroy()
+			end
+		end
+
+		if #itemsToDisplay == 0 then
+			print("[CraftedInventory] No items to display")
+			local noItems = Instance.new("TextLabel")
+			noItems.Size = UDim2.new(1, -10, 0, 50)
+			noItems.BackgroundTransparency = 1
+			noItems.Text = "No crafted items yet!"
+			noItems.TextColor3 = Color3.fromRGB(150, 150, 150)
+			noItems.TextSize = 16
+			noItems.Font = Enum.Font.Gotham
+			noItems.Parent = scrollFrame
+			return
+		end
+
+		-- Sort items by rarity
+		local sortedItems = {}
+		for i, item in ipairs(itemsToDisplay) do
+			sortedItems[i] = item
+		end
+
+		table.sort(sortedItems, function(a, b)
+			local rarityA = getRarityIndex(a.Rarity)
+			local rarityB = getRarityIndex(b.Rarity)
+			if rarityA ~= rarityB then
+				return rarityA &lt; rarityB
+			end
+			return a.ItemName &lt; b.ItemName
+		end)
+
+		-- Display each item
+		for i, item in ipairs(sortedItems) do
+			selectedItems[i] = false
+
+			local itemFrame = Instance.new("Frame")
+			itemFrame.Size = UDim2.new(1, -10, 0, 115)
+			itemFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+			itemFrame.BorderSizePixel = 0
+			itemFrame.Parent = scrollFrame
+
+			local itemCorner = Instance.new("UICorner")
+			itemCorner.CornerRadius = UDim.new(0, 8)
+			itemCorner.Parent = itemFrame
+
+			-- Get rarity color
+			local rarityColor = Color3.fromRGB(200, 200, 200)
+			for _, rarity in ipairs(RNGConfig.Rarities) do
+				if rarity.Name == item.Rarity then
+					rarityColor = rarity.Color
+					break
+				end
+			end
+
+			local stroke = Instance.new("UIStroke")
+			stroke.Color = rarityColor
+			stroke.Thickness = 2
+			stroke.Parent = itemFrame
+
+			-- Add crafted badge if item is crafted
+			if item.IsCrafted then
+				local craftedBadge = Instance.new("TextLabel")
+				craftedBadge.Size = UDim2.new(0, 60, 0, 20)
+				craftedBadge.Position = UDim2.new(1, -70, 0, 5)
+				craftedBadge.BackgroundColor3 = Color3.fromRGB(150, 100, 200)
+				craftedBadge.BorderSizePixel = 0
+				craftedBadge.Text = "⚒️"
+				craftedBadge.TextColor3 = Color3.fromRGB(255, 255, 255)
+				craftedBadge.TextSize = 14
+				craftedBadge.Font = Enum.Font.GothamBold
+				craftedBadge.Parent = itemFrame
+
+				local badgeCorner = Instance.new("UICorner")
+				badgeCorner.CornerRadius = UDim.new(0, 4)
+				badgeCorner.Parent = craftedBadge
+			end
+
+			-- Selection checkbox
+			local checkbox = Instance.new("TextButton")
+			checkbox.Name = "Checkbox"
+			checkbox.Size = UDim2.new(0, 40, 0, 40)
+			checkbox.Position = UDim2.new(0, 10, 0.5, -20)
+			checkbox.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
+			checkbox.Text = "☐"
+			checkbox.TextColor3 = Color3.fromRGB(200, 200, 200)
+			checkbox.TextSize = 24
+			checkbox.Font = Enum.Font.GothamBold
+			checkbox.Parent = itemFrame
+
+			local checkboxCorner = Instance.new("UICorner")
+			checkboxCorner.CornerRadius = UDim.new(0, 6)
+			checkboxCorner.Parent = checkbox
+
+			checkbox.MouseButton1Click:Connect(function()
+				selectedItems[i] = not selectedItems[i]
+				if selectedItems[i] then
+					checkbox.Text = "☑"
+					checkbox.TextColor3 = Color3.fromRGB(100, 200, 100)
+				else
+					checkbox.Text = "☐"
+					checkbox.TextColor3 = Color3.fromRGB(200, 200, 200)
+				end
+			end)
+
+			local itemName = Instance.new("TextLabel")
+			itemName.Size = UDim2.new(0.5, -60, 0, 30)
+			itemName.Position = UDim2.new(0, 60, 0, 5)
+			itemName.BackgroundTransparency = 1
+			local quantity = item.Quantity or 1
+			itemName.Text = quantity &gt; 1 and (item.ItemName .. " x" .. quantity) or item.ItemName
+			itemName.TextColor3 = Color3.fromRGB(255, 255, 255)
+			itemName.TextSize = 18
+			itemName.Font = Enum.Font.GothamBold
+			itemName.TextXAlignment = Enum.TextXAlignment.Left
+			itemName.Parent = itemFrame
+
+			local itemRarity = Instance.new("TextLabel")
+			itemRarity.Size = UDim2.new(0.5, -60, 0, 25)
+			itemRarity.Position = UDim2.new(0, 60, 0, 35)
+			itemRarity.BackgroundTransparency = 1
+			itemRarity.Text = item.Rarity
+			itemRarity.TextColor3 = rarityColor
+			itemRarity.TextSize = 16
+			itemRarity.Font = Enum.Font.Gotham
+			itemRarity.TextXAlignment = Enum.TextXAlignment.Left
+			itemRarity.Parent = itemFrame
+
+			-- Add buff description for crafted items
+			if item.Description then
+				local itemDesc = Instance.new("TextLabel")
+				itemDesc.Size = UDim2.new(1, -70, 0, 50)
+				itemDesc.Position = UDim2.new(0, 60, 0, 60)
+				itemDesc.BackgroundTransparency = 1
+				itemDesc.Text = item.Description
+				itemDesc.TextColor3 = Color3.fromRGB(150, 200, 255)
+				itemDesc.TextSize = 11
+				itemDesc.Font = Enum.Font.Gotham
+				itemDesc.TextXAlignment = Enum.TextXAlignment.Left
+				itemDesc.TextYAlignment = Enum.TextYAlignment.Top
+				itemDesc.TextWrapped = true
+				itemDesc.Parent = itemFrame
+			end
+
+			local equipButton = Instance.new("TextButton")
+			equipButton.Size = UDim2.new(0, 90, 0, 50)
+			equipButton.Position = UDim2.new(1, -190, 0.5, -25)
+			equipButton.BackgroundColor3 = item.Equipped and Color3.fromRGB(50, 200, 50) or Color3.fromRGB(100, 100, 120)
+			equipButton.Text = item.Equipped and "EQUIPPED" or "EQUIP"
+			equipButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			equipButton.TextSize = 14
+			equipButton.Font = Enum.Font.GothamBold
+			equipButton.Parent = itemFrame
+
+			local equipCorner = Instance.new("UICorner")
+			equipCorner.CornerRadius = UDim.new(0, 6)
+			equipCorner.Parent = equipButton
+
+			equipButton.MouseButton1Click:Connect(function()
+				if isEquipping then return end -- Prevent multiple clicks
+				isEquipping = true
+				equipButton.Text = "EQUIPPING..."
+				EquipEvent:FireServer(item.OriginalIndex)
+				-- Reset after a short delay
+				task.delay(0.5, function()
+					isEquipping = false
+					if invGui and invGui.Parent then
+						-- Refresh inventory to update button state
+						refreshInventory()
+					end
+				end)
+			end)
+
+			local deleteButton = Instance.new("TextButton")
+			deleteButton.Size = UDim2.new(0, 90, 0, 50)
+			deleteButton.Position = UDim2.new(1, -95, 0.5, -25)
+			deleteButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+			deleteButton.Text = "DELETE"
+			deleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			deleteButton.TextSize = 14
+			deleteButton.Font = Enum.Font.GothamBold
+			deleteButton.Parent = itemFrame
+
+			local deleteCorner = Instance.new("UICorner")
+			deleteCorner.CornerRadius = UDim.new(0, 6)
+			deleteCorner.Parent = deleteButton
+
+			deleteButton.MouseButton1Click:Connect(function()
+				DeleteEvent:FireServer(item.OriginalIndex)
+			end)
+
+			itemFrames[i] = {
+				frame = itemFrame,
+				checkbox = checkbox
+			}
+		end
+
+		scrollFrame.CanvasSize = UDim2.new(0, 0, 0, scrollFrame.UIListLayout.AbsoluteContentSize.Y + 10)
+	end
+
+	-- Initial display
+	displayItems(inventory)
+
+	-- Function to refresh inventory display
+	local function refreshInventory()
+		-- Filter for crafted items only
+		local craftedItems = {}
+		for _, item in ipairs(cachedInventory) do
+			if item.IsCrafted then
+				table.insert(craftedItems, item)
+			end
+		end
+		print("[CraftedInventory] Found " .. #craftedItems .. " crafted items out of " .. #cachedInventory .. " total")
+		displayItems(craftedItems)
+	end
+
+	-- Listen for inventory updates and refresh
+	InventoryUpdateEvent.OnClientEvent:Connect(function(data)
+		if data then
+			cachedInventory = data.Inventory or {}
+			playerStats.TotalRolls = data.TotalRolls or 0
+			playerStats.Currency = data.Currency or 0
+			print("[CraftedInventory] Inventory updated: " .. #cachedInventory .. " items")
+			-- Refresh the crafted inventory display if it's open
+			if invGui and invGui.Parent and invGui.Parent == playerGui then
+				print("[CraftedInventory] Refreshing display...")
+				refreshInventory()
+			else
+				print("[CraftedInventory] UI not open or invalid")
+			end
+		end
+	end)
+end
+
+-- Create inventory UI
+local function createInventoryUI()
+	local invGui = Instance.new("ScreenGui")
+	invGui.Name = "InventoryGui"
+	invGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	invGui.DisplayOrder = 100
+	invGui.Parent = playerGui
+
+	-- Inventory frame (responsive for mobile)
+	local invFrame = Instance.new("Frame")
+	invFrame.Name = "InventoryFrame"
+	invFrame.Size = UDim2.new(0.9, 0, 0.8, 0)
+	invFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	invFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+	invFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+	invFrame.BorderSizePixel = 0
+	invFrame.Active = false -- Don't block clicks on transparent areas
+	invFrame.Parent = invGui
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 15)
+	corner.Parent = invFrame
+
+	-- Title (responsive for mobile)
+	local title = Instance.new("TextLabel")
+	title.Size = UDim2.new(1, -70, 0, 50)
+	title.Position = UDim2.new(0, 10, 0, 10)
+	title.BackgroundTransparency = 1
+	title.Text = "ELEMENTS"
+	title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	title.TextSize = 20
+	title.Font = Enum.Font.GothamBold
+	title.Parent = invFrame
+
+	-- Close button (larger for mobile)
+	local closeButton = Instance.new("TextButton")
+	closeButton.Size = UDim2.new(0, 60, 0, 60)
+	closeButton.Position = UDim2.new(1, -70, 0, 10)
+	closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+	closeButton.Text = "✕"
+	closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	closeButton.TextSize = 30
+	closeButton.Font = Enum.Font.GothamBold
+	closeButton.Parent = invFrame
+
+	local closeCorner = Instance.new("UICorner")
+	closeCorner.CornerRadius = UDim.new(0, 8)
+	closeCorner.Parent = closeButton
+
+	-- Control panel for bulk actions (responsive for mobile)
+	local controlPanel = Instance.new("Frame")
+	controlPanel.Name = "ControlPanel"
+	controlPanel.Size = UDim2.new(1, -20, 0, 70)
+	controlPanel.Position = UDim2.new(0, 10, 0, 70)
+	controlPanel.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
+	controlPanel.BorderSizePixel = 0
+	controlPanel.Parent = invFrame
+
+	local controlCorner = Instance.new("UICorner")
+	controlCorner.CornerRadius = UDim.new(0, 10)
+	controlCorner.Parent = controlPanel
+
+	-- Scroll frame for items (responsive for mobile)
+	local scrollFrame = Instance.new("ScrollingFrame")
+	scrollFrame.Size = UDim2.new(1, -20, 1, -140)
+	scrollFrame.Position = UDim2.new(0, 10, 0, 140)
+	scrollFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+	scrollFrame.BorderSizePixel = 0
+	scrollFrame.ScrollBarThickness = 10
+	scrollFrame.Parent = invFrame
+
+	local scrollCorner = Instance.new("UICorner")
+	scrollCorner.CornerRadius = UDim.new(0, 10)
+	scrollCorner.Parent = scrollFrame
+
+	local listLayout = Instance.new("UIListLayout")
+	listLayout.Padding = UDim.new(0, 5)
+	listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	listLayout.Parent = scrollFrame
+
+	-- Close button functionality
+	closeButton.MouseButton1Click:Connect(function()
+		invGui:Destroy()
+	end)
+
+	return invGui, scrollFrame
+end
+
+-- Handle inventory updates from server
+InventoryUpdateEvent.OnClientEvent:Connect(function(data)
+	if data then
+		cachedInventory = data.Inventory or {}
+		playerStats.TotalRolls = data.TotalRolls or 0
+		playerStats.Currency = data.Currency or 0
+		print("Inventory updated: " .. #cachedInventory .. " items, " .. playerStats.TotalRolls .. " total rolls")
+	end
+end)
+
+-- Show inventory
+inventoryButton.MouseButton1Click:Connect(function()
+	print("Inventory button clicked!")
+	
+	-- Check if inventory is already open
+	if playerGui:FindFirstChild("InventoryGui") then
+		print("Inventory already open, returning")
+		return
+	end
+
+	print("Creating inventory UI...")
+	local invGui, scrollFrame = createInventoryUI()
+
+	-- Use cached inventory first, fall back to server request
+	local inventory = cachedInventory
+	print("Cached inventory has " .. #inventory .. " items")
+
+	-- If no cached inventory, request from server
+	if not inventory or #inventory == 0 then
+		print("No cached inventory, requesting from server...")
+		local success, serverInventory = pcall(function()
+			return GetInventoryFunction:InvokeServer()
+		end)
+
+		print("Server request success:", success, "Result type:", type(serverInventory))
+
+		if success and serverInventory then
+			inventory = serverInventory
+			cachedInventory = serverInventory
+			print("Received " .. #inventory .. " items from server")
+		else
+			warn("Failed to get inventory: " .. tostring(serverInventory))
+			local errorLabel = Instance.new("TextLabel")
+			errorLabel.Size = UDim2.new(1, -10, 0, 50)
+			errorLabel.BackgroundTransparency = 1
+			errorLabel.Text = "Error loading inventory!"
+			errorLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
+			errorLabel.TextSize = 16
+			errorLabel.Font = Enum.Font.Gotham
+			errorLabel.Parent = scrollFrame
+			return
+		end
+	end
+
+	print("Displaying inventory with " .. #inventory .. " items")
+	print("First item data:", inventory[1] and inventory[1].ItemName or "No items")
+
+	if #inventory == 0 then
+		local noItems = Instance.new("TextLabel")
+		noItems.Size = UDim2.new(1, -10, 0, 50)
+		noItems.BackgroundTransparency = 1
+		noItems.Text = "No elements yet! Roll to get started."
+		noItems.TextColor3 = Color3.fromRGB(150, 150, 150)
+		noItems.TextSize = 16
+		noItems.Font = Enum.Font.Gotham
+		noItems.Parent = scrollFrame
+		return
+	end
+
+	-- Track selected items
+	local selectedItems = {}
+	local itemFrames = {}
+
+	-- Function to display items
+	local function displayItems(itemsToDisplay)
+		-- Clear existing items
+		for _, child in ipairs(scrollFrame:GetChildren()) do
+			if child:IsA("Frame") or child:IsA("TextLabel") then
+				child:Destroy()
+			end
+		end
+
+		if #itemsToDisplay == 0 then
+			local noItems = Instance.new("TextLabel")
+			noItems.Size = UDim2.new(1, -10, 0, 50)
+			noItems.BackgroundTransparency = 1
+			noItems.Text = "No elements yet! Roll to get started."
+			noItems.TextColor3 = Color3.fromRGB(150, 150, 150)
+			noItems.TextSize = 16
+			noItems.Font = Enum.Font.Gotham
+			noItems.Parent = scrollFrame
+			return
+		end
+
+		-- Sort items by rarity
+		local sortedItems = {}
+		for i, item in ipairs(itemsToDisplay) do
+			sortedItems[i] = item
+		end
+
+		table.sort(sortedItems, function(a, b)
+			local rarityA = getRarityIndex(a.Rarity)
+			local rarityB = getRarityIndex(b.Rarity)
+			if rarityA ~= rarityB then
+				return rarityA &lt; rarityB
+			end
+			return a.ItemName &lt; b.ItemName
+		end)
+
+		-- Display each item
+		for i, item in ipairs(sortedItems) do
+			selectedItems[i] = false
+
+			local itemFrame = Instance.new("Frame")
+			itemFrame.Size = UDim2.new(1, -10, 0, 80)
+			itemFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+			itemFrame.BorderSizePixel = 0
+			itemFrame.Parent = scrollFrame
+
+			local itemCorner = Instance.new("UICorner")
+			itemCorner.CornerRadius = UDim.new(0, 8)
+			itemCorner.Parent = itemFrame
+
+			-- Get rarity color
+			local rarityColor = Color3.fromRGB(200, 200, 200)
+			for _, rarity in ipairs(RNGConfig.Rarities) do
+				if rarity.Name == item.Rarity then
+					rarityColor = rarity.Color
+					break
+				end
+			end
+
+			local stroke = Instance.new("UIStroke")
+			stroke.Color = rarityColor
+			stroke.Thickness = 2
+			stroke.Parent = itemFrame
+
+			-- Add crafted badge if item is crafted
+			if item.IsCrafted then
+				local craftedBadge = Instance.new("TextLabel")
+				craftedBadge.Size = UDim2.new(0, 60, 0, 20)
+				craftedBadge.Position = UDim2.new(1, -70, 0, 5)
+				craftedBadge.BackgroundColor3 = Color3.fromRGB(150, 100, 200)
+				craftedBadge.BorderSizePixel = 0
+				craftedBadge.Text = "⚒️"
+				craftedBadge.TextColor3 = Color3.fromRGB(255, 255, 255)
+				craftedBadge.TextSize = 14
+				craftedBadge.Font = Enum.Font.GothamBold
+				craftedBadge.Parent = itemFrame
+
+				local badgeCorner = Instance.new("UICorner")
+				badgeCorner.CornerRadius = UDim.new(0, 4)
+				badgeCorner.Parent = craftedBadge
+			end
+
+			-- Selection checkbox
+			local checkbox = Instance.new("TextButton")
+			checkbox.Name = "Checkbox"
+			checkbox.Size = UDim2.new(0, 40, 0, 40)
+			checkbox.Position = UDim2.new(0, 10, 0.5, -20)
+			checkbox.BackgroundColor3 = Color3.fromRGB(60, 60, 70)
+			checkbox.Text = "☐"
+			checkbox.TextColor3 = Color3.fromRGB(200, 200, 200)
+			checkbox.TextSize = 24
+			checkbox.Font = Enum.Font.GothamBold
+			checkbox.Parent = itemFrame
+
+			local checkboxCorner = Instance.new("UICorner")
+			checkboxCorner.CornerRadius = UDim.new(0, 6)
+			checkboxCorner.Parent = checkbox
+
+			checkbox.MouseButton1Click:Connect(function()
+				selectedItems[i] = not selectedItems[i]
+				if selectedItems[i] then
+					checkbox.Text = "☑"
+					checkbox.TextColor3 = Color3.fromRGB(100, 200, 100)
+				else
+					checkbox.Text = "☐"
+					checkbox.TextColor3 = Color3.fromRGB(200, 200, 200)
+				end
+			end)
+
+			local itemName = Instance.new("TextLabel")
+			itemName.Size = UDim2.new(0.5, -60, 0, 30)
+			itemName.Position = UDim2.new(0, 60, 0, 5)
+			itemName.BackgroundTransparency = 1
+			local quantity = item.Quantity or 1
+			itemName.Text = quantity &gt; 1 and (item.ItemName .. " x" .. quantity) or item.ItemName
+			itemName.TextColor3 = Color3.fromRGB(255, 255, 255)
+			itemName.TextSize = 18
+			itemName.Font = Enum.Font.GothamBold
+			itemName.TextXAlignment = Enum.TextXAlignment.Left
+			itemName.Parent = itemFrame
+
+			local itemRarity = Instance.new("TextLabel")
+			itemRarity.Size = UDim2.new(0.5, -60, 0, 25)
+			itemRarity.Position = UDim2.new(0, 60, 0, 35)
+			itemRarity.BackgroundTransparency = 1
+			itemRarity.Text = item.Rarity
+			itemRarity.TextColor3 = rarityColor
+			itemRarity.TextSize = 16
+			itemRarity.Font = Enum.Font.Gotham
+			itemRarity.TextXAlignment = Enum.TextXAlignment.Left
+			itemRarity.Parent = itemFrame
+
+			local equipButton = Instance.new("TextButton")
+			equipButton.Size = UDim2.new(0, 90, 0, 50)
+			equipButton.Position = UDim2.new(1, -190, 0.5, -25)
+			equipButton.BackgroundColor3 = item.Equipped and Color3.fromRGB(50, 200, 50) or Color3.fromRGB(100, 100, 120)
+			equipButton.Text = item.Equipped and "EQUIPPED" or "EQUIP"
+			equipButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			equipButton.TextSize = 14
+			equipButton.Font = Enum.Font.GothamBold
+			equipButton.Parent = itemFrame
+
+			local equipCorner = Instance.new("UICorner")
+			equipCorner.CornerRadius = UDim.new(0, 6)
+			equipCorner.Parent = equipButton
+
+			equipButton.MouseButton1Click:Connect(function()
+				EquipEvent:FireServer(item.OriginalIndex)
+			end)
+
+			local deleteButton = Instance.new("TextButton")
+			deleteButton.Size = UDim2.new(0, 90, 0, 50)
+			deleteButton.Position = UDim2.new(1, -95, 0.5, -25)
+			deleteButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+			deleteButton.Text = "DELETE"
+			deleteButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+			deleteButton.TextSize = 14
+			deleteButton.Font = Enum.Font.GothamBold
+			deleteButton.Parent = itemFrame
+
+			local deleteCorner = Instance.new("UICorner")
+			deleteCorner.CornerRadius = UDim.new(0, 6)
+			deleteCorner.Parent = deleteButton
+
+			deleteButton.MouseButton1Click:Connect(function()
+				DeleteEvent:FireServer(item.OriginalIndex)
+			end)
+
+			itemFrames[i] = {
+				frame = itemFrame,
+				checkbox = checkbox
+			}
+		end
+
+		scrollFrame.CanvasSize = UDim2.new(0, 0, 0, scrollFrame.UIListLayout.AbsoluteContentSize.Y + 10)
+	end
+
+	-- Initial display
+	displayItems(inventory)
+
+	-- Function to refresh inventory display
+	local function refreshInventory()
+		-- Use cached inventory
+		inventory = cachedInventory
+		displayItems(inventory)
+	end
+
+	-- Listen for inventory updates and refresh
+	InventoryUpdateEvent.OnClientEvent:Connect(function(data)
+		if data then
+			cachedInventory = data.Inventory or {}
+			playerStats.TotalRolls = data.TotalRolls or 0
+			playerStats.Currency = data.Currency or 0
+			print("Inventory updated: " .. #cachedInventory .. " items")
+			-- Refresh the inventory display if it's open
+			if invGui and invGui.Parent then
+				refreshInventory()
+			end
+		end
+	end)
+end)
+
+
+-- Handle equip response
+EquipEvent.OnClientEvent:Connect(function(response)
+	print("[RNGClient] EquipEvent received. Success:", response.Success)
+	if response.Success then
+		print("[RNGClient] Element equipped successfully!")
+		-- Apply equip effects
+		if response.EquippedItem then
+			print("[RNGClient] EquippedItem data:", response.EquippedItem.ItemName, response.EquippedItem.Rarity, "IsCrafted:", response.EquippedItem.IsCrafted)
+			EquipEffects.EquipElement(player, response.EquippedItem)
+			
+			-- Show buff notification if crafted
+			if response.EquippedItem.IsCrafted then
+				local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+				local rarityData = nil
+				for _, r in ipairs(RNGConfig.Rarities) do
+					if r.Name == response.EquippedItem.Rarity then
+						rarityData = r
+						break
+					end
+				end
+				
+				if rarityData then
+					local rollSpeedBuff = math.floor((rarityData.RollSpeedBuff or 0) * 100)
+					local luckBuff = rarityData.LuckBuff or 1
+					print("[RNGClient] Buffs applied: Roll Speed +" .. rollSpeedBuff .. "%, Luck x" .. luckBuff)
+				end
+			end
+		else
+			print("[RNGClient] No EquippedItem in response, requesting from server...")
+			-- Fallback: Request equipped item from server
+			task.spawn(function()
+				local RemoteEventsFolder = ReplicatedStorage:WaitForChild("RemoteEvents")
+				local GetEquippedFunction = RemoteEventsFolder:FindFirstChild("GetEquippedFunction")
+				if GetEquippedFunction then
+					local success, equippedItem = pcall(function()
+						return GetEquippedFunction:InvokeServer()
+					end)
+					if success and equippedItem then
+						print("[RNGClient] Got equipped item from server:", equippedItem.ItemName)
+						EquipEffects.EquipElement(player, equippedItem)
+					else
+						print("[RNGClient] Failed to get equipped item from server")
+					end
+				else
+					print("[RNGClient] GetEquippedFunction not found")
+				end
+			end)
+		end
+	else
+		warn("[RNGClient] Failed to equip element: " .. (response.Message or "Unknown error"))
+	end
+end)
+
+-- Handle character respawn
+player.CharacterAdded:Connect(function(character)
+	EquipEffects.OnCharacterAdded(player, character)
+end)
+
+-- Apply effects if character already exists
+if player.Character then
+	EquipEffects.OnCharacterAdded(player, player.Character)
+end
+
+-- Handle collection button click
+collectionButton.MouseButton1Click:Connect(function()
+	-- Check if collection is already open
+	if playerGui:FindFirstChild("CollectionGui") then
+		return
+	end
+
+	-- Use cached inventory
+	local ownedItems = cachedInventory
+
+	-- If no cached inventory, request from server
+	if not ownedItems or #ownedItems == 0 then
+		local success, serverInventory = pcall(function()
+			return GetInventoryFunction:InvokeServer()
+		end)
+
+		if success and serverInventory then
+			ownedItems = serverInventory
+			cachedInventory = serverInventory
+		end
+	end
+
+	-- Create collection UI
+	UIHandler.CreateCollectionUI(playerGui, ownedItems)
+end)
+
+-- Handle crafted inventory button click
+craftedInventoryButton.MouseButton1Click:Connect(function()
+	-- Check if crafted inventory is already open
+	if playerGui:FindFirstChild("CraftedInventoryGui") then
+		return
+	end
+
+	-- Use cached inventory
+	local inventory = cachedInventory
+
+	-- If no cached inventory, request from server
+	if not inventory or #inventory == 0 then
+		local success, serverInventory = pcall(function()
+			return GetInventoryFunction:InvokeServer()
+		end)
+
+		if success and serverInventory then
+			inventory = serverInventory
+			cachedInventory = serverInventory
+		end
+	end
+
+	-- Filter for crafted items only
+	local craftedItems = {}
+	for _, item in ipairs(inventory) do
+		if item.IsCrafted then
+			table.insert(craftedItems, item)
+		end
+	end
+
+	-- Create inventory UI for crafted items
+	createInventoryUIForCrafted(playerGui, craftedItems)
+end)
+
+-- Handle auto roll button click
+autoRollButton.MouseButton1Click:Connect(function()
+	toggleAutoRoll()
+end)
+
+-- Handle crafting button click
+craftingButton.MouseButton1Click:Connect(function()
+	-- Check if crafting is already open
+	if playerGui:FindFirstChild("CraftingGui") then
+		return
+	end
+
+	-- Get inventory from server
+	local success, inventory = pcall(function()
+		return GetInventoryForCraftingFunction:InvokeServer()
+	end)
+
+	if not success or not inventory then
+		warn("Failed to get inventory for crafting")
+		return
+	end
+
+	-- Create crafting UI
+	local craftingResult = UIHandler.CreateCraftingUI(playerGui, inventory, CraftingRecipes.Recipes)
+	local craftingGui = craftingResult.Gui
+	local recipesScroll = craftingResult.RecipesScroll
+	local detailsScroll = craftingResult.DetailsScroll
+	local detailsTitle = craftingResult.DetailsTitle
+
+	-- Build inventory lookup table
+	local inventoryLookup = {}
+	for key, quantity in pairs(inventory) do
+		inventoryLookup[key] = quantity
+	end
+
+	-- Track currently selected recipe
+	local selectedRecipeIndex = nil
+
+	-- Function to show recipe details
+	local function showRecipeDetails(recipeIndex)
+		selectedRecipeIndex = recipeIndex
+		local recipe = CraftingRecipes.Recipes[recipeIndex]
+		if not recipe then return end
+
+		-- Update title
+		detailsTitle.Text = recipe.Result.Name .. " (" .. recipe.Result.Rarity .. ")"
+
+		-- Clear previous details (except the layout)
+		for _, child in ipairs(detailsScroll:GetChildren()) do
+			if child.ClassName ~= "UIListLayout" then
+				child:Destroy()
+			end
+		end
+
+		-- Show description
+		local descFrame = Instance.new("Frame")
+		descFrame.Size = UDim2.new(1, -10, 0, 60)
+		descFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+		descFrame.BorderSizePixel = 0
+		descFrame.Parent = detailsScroll
+
+		local descCorner = Instance.new("UICorner")
+		descCorner.CornerRadius = UDim.new(0, 8)
+		descCorner.Parent = descFrame
+
+		local descLabel = Instance.new("TextLabel")
+		descLabel.Size = UDim2.new(1, -20, 1, 0)
+		descLabel.Position = UDim2.new(0, 10, 0, 0)
+		descLabel.BackgroundTransparency = 1
+		descLabel.Text = recipe.Result.Description
+		descLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+		descLabel.TextSize = 14
+		descLabel.Font = Enum.Font.Gotham
+		descLabel.TextWrapped = true
+		descLabel.TextXAlignment = Enum.TextXAlignment.Left
+		descLabel.TextYAlignment = Enum.TextYAlignment.Top
+		descLabel.Parent = descFrame
+
+		-- Spacer between description and ingredients
+		local spacer = Instance.new("Frame")
+		spacer.Size = UDim2.new(1, 0, 0, 10)
+		spacer.BackgroundTransparency = 1
+		spacer.Parent = detailsScroll
+
+		-- Show required ingredients
+		local ingredientsTitle = Instance.new("TextLabel")
+		ingredientsTitle.Size = UDim2.new(1, 0, 0, 25)
+		ingredientsTitle.BackgroundTransparency = 1
+		ingredientsTitle.Text = "Required Ingredients:"
+		ingredientsTitle.TextColor3 = Color3.fromRGB(180, 180, 180)
+		ingredientsTitle.TextSize = 14
+		ingredientsTitle.Font = Enum.Font.GothamBold
+		ingredientsTitle.TextXAlignment = Enum.TextXAlignment.Left
+		ingredientsTitle.Parent = detailsScroll
+
+		for _, ingredient in ipairs(recipe.Ingredients) do
+			local key = ingredient.Name .. "|" .. ingredient.Rarity
+			local have = inventoryLookup[key] or 0
+			local haveEnough = have &gt;= ingredient.Quantity
+
+			local ingFrame = Instance.new("Frame")
+			ingFrame.Size = UDim2.new(1, -10, 0, 45)
+			ingFrame.BackgroundColor3 = haveEnough and Color3.fromRGB(50, 80, 50) or Color3.fromRGB(80, 50, 50)
+			ingFrame.BorderSizePixel = 0
+			ingFrame.Parent = detailsScroll
+
+			local ingCorner = Instance.new("UICorner")
+			ingCorner.CornerRadius = UDim.new(0, 8)
+			ingCorner.Parent = ingFrame
+
+			local ingName = Instance.new("TextLabel")
+			ingName.Size = UDim2.new(0.6, -10, 1, 0)
+			ingName.Position = UDim2.new(0, 10, 0, 0)
+			ingName.BackgroundTransparency = 1
+			ingName.Text = ingredient.Name
+			ingName.TextColor3 = Color3.fromRGB(255, 255, 255)
+			ingName.TextSize = 14
+			ingName.Font = Enum.Font.GothamBold
+			ingName.TextXAlignment = Enum.TextXAlignment.Left
+			ingName.Parent = ingFrame
+
+			local ingRarity = Instance.new("TextLabel")
+			ingRarity.Size = UDim2.new(0.3, -10, 1, 0)
+			ingRarity.Position = UDim2.new(0.6, 0, 0, 0)
+			ingRarity.BackgroundTransparency = 1
+			ingRarity.Text = ingredient.Rarity
+			ingRarity.TextColor3 = Color3.fromRGB(200, 200, 200)
+			ingRarity.TextSize = 12
+			ingRarity.Font = Enum.Font.Gotham
+			ingRarity.TextXAlignment = Enum.TextXAlignment.Left
+			ingRarity.Parent = ingFrame
+
+			local ingQuantity = Instance.new("TextLabel")
+			ingQuantity.Size = UDim2.new(0.4, -10, 1, 0)
+			ingQuantity.Position = UDim2.new(1, -10, 0, 0)
+			ingQuantity.BackgroundTransparency = 1
+			ingQuantity.Text = have .. "/" .. ingredient.Quantity
+			ingQuantity.TextColor3 = haveEnough and Color3.fromRGB(100, 255, 100) or Color3.fromRGB(255, 100, 100)
+			ingQuantity.TextSize = 14
+			ingQuantity.Font = Enum.Font.GothamBold
+			ingQuantity.TextXAlignment = Enum.TextXAlignment.Right
+			ingQuantity.Parent = ingFrame
+		end
+
+		-- Add craft button at bottom
+		local canCraft = true
+		for _, ingredient in ipairs(recipe.Ingredients) do
+			local key = ingredient.Name .. "|" .. ingredient.Rarity
+			local have = inventoryLookup[key] or 0
+			if have &lt; ingredient.Quantity then
+				canCraft = false
+				break
+			end
+		end
+
+		local craftButton = Instance.new("TextButton")
+		craftButton.Name = "CraftButton"
+		craftButton.Size = UDim2.new(1, -20, 0, 50)
+		craftButton.BackgroundColor3 = canCraft and Color3.fromRGB(100, 150, 100) or Color3.fromRGB(100, 50, 50)
+		craftButton.BorderSizePixel = 0
+		craftButton.Text = canCraft and "Craft!" or "Not Enough Ingredients"
+		craftButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+		craftButton.TextSize = 18
+		craftButton.Font = Enum.Font.GothamBold
+		craftButton.Parent = detailsScroll
+
+		local craftCorner = Instance.new("UICorner")
+		craftCorner.CornerRadius = UDim.new(0, 10)
+		craftCorner.Parent = craftButton
+
+		if canCraft then
+			craftButton.MouseButton1Click:Connect(function()
+				print("[RNGClient] Crafting recipe " .. recipeIndex)
+				CraftingEvent:FireServer(recipeIndex)
+			end)
+		end
+
+		detailsScroll.CanvasSize = UDim2.new(0, 0, 0, detailsLayout.AbsoluteContentSize.Y + 10)
+	end
+
+	-- Populate recipes (sorted by rarity)
+	local sortedRecipes = {}
+	for i, recipe in ipairs(CraftingRecipes.Recipes) do
+		sortedRecipes[i] = recipe
+	end
+
+	-- Sort recipes by result rarity (least rare to most rare)
+	table.sort(sortedRecipes, function(a, b)
+		local rarityA = getRarityIndex(a.Result.Rarity)
+		local rarityB = getRarityIndex(b.Result.Rarity)
+		if rarityA ~= rarityB then
+			return rarityA &lt; rarityB
+		end
+		-- If same rarity, sort by name alphabetically
+		return a.Result.Name &lt; b.Result.Name
+	end)
+
+	for recipeIndex, recipe in ipairs(sortedRecipes) do
+		-- Find the original index in the unsorted recipes array
+		local originalIndex = table.find(CraftingRecipes.Recipes, recipe)
+
+		-- Check if player has all ingredients
+		local canCraft = true
+		for _, ingredient in ipairs(recipe.Ingredients) do
+			local key = ingredient.Name .. "|" .. ingredient.Rarity
+			local have = inventoryLookup[key] or 0
+			if have &lt; ingredient.Quantity then
+				canCraft = false
+				break
+			end
+		end
+
+		-- Get rarity color for the recipe result
+		local rarityColor = Color3.fromRGB(200, 200, 200)
+		for _, rarity in ipairs(RNGConfig.Rarities) do
+			if rarity.Name == recipe.Result.Rarity then
+				rarityColor = rarity.Color
+				break
+			end
+		end
+
+		local recipeButton = Instance.new("TextButton")
+		recipeButton.Name = "Recipe" .. originalIndex
+		recipeButton.Size = UDim2.new(1, -10, 0, 40)
+		recipeButton.BackgroundColor3 = canCraft and rarityColor or Color3.fromRGB(50, 50, 60)
+		recipeButton.BorderSizePixel = 0
+		recipeButton.Text = recipe.Result.Name
+		recipeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+		recipeButton.Font = Enum.Font.GothamBold
+		recipeButton.TextSize = 16
+		recipeButton.LayoutOrder = recipeIndex -- Set layout order to maintain sorting
+		recipeButton.Parent = recipesScroll
+
+		recipeButton.MouseButton1Click:Connect(function()
+			showRecipeDetails(originalIndex)
+		end)
+	end
+
+	recipesScroll.CanvasSize = UDim2.new(0, 0, 0, recipesScroll.UIListLayout.AbsoluteContentSize.Y + 10)
+end)
+
+-- Handle crafting response
+CraftingEvent.OnClientEvent:Connect(function(response)
+	if response.Success then
+		print("[RNGClient] Successfully crafted " .. response.Result.Name)
+		-- Wait a moment for the inventory update to arrive
+		task.wait(0.1)
+		-- Refresh crafting UI if open (don't close it)
+		local craftingGui = playerGui:FindFirstChild("CraftingGui")
+		if craftingGui then
+			-- Trigger a refresh by clicking the crafting button again
+			craftingButton.MouseButton1Click:Fire()
+		end
+	else
+		warn("[RNGClient] Crafting failed: " .. (response.Message or "Unknown error"))
+	end
+end)
+
+print("RNG Client initialized!")</string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="20">
+          <Properties>
+            <string name="Name">RollEffects</string>
+            <string name="Source">--[[
+	Roll Effects Module
+	Handles visual effects and animations for rolls
+]]
+
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local RollEffects = {}
+
+-- Create a particle effect for rolls
+function RollEffects.CreateRollParticles(player, rarityColor)
+	local character = player.Character
+	if not character then return end
+
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoidRootPart then return end
+
+	-- Create particle emitter
+	local particles = Instance.new("ParticleEmitter")
+	particles.Parent = humanoidRootPart
+	particles.Color = ColorSequence.new(rarityColor)
+	particles.Size = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 2),
+		NumberSequenceKeypoint.new(1, 0)
+	})
+	particles.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0),
+		NumberSequenceKeypoint.new(1, 1)
+	})
+	particles.Lifetime = NumberRange.new(0.5, 1)
+	particles.Rate = 50
+	particles.Speed = NumberRange.new(5, 10)
+	particles.SpreadAngle = Vector2.new(360, 360)
+	particles.Enabled = true
+
+	-- Disable after 2 seconds
+	task.delay(2, function()
+		particles.Enabled = false
+		task.wait(1)
+		particles:Destroy()
+	end)
+end
+
+-- Create a beam effect shooting upward
+function RollEffects.CreateBeamEffect(player, rarityColor)
+	local character = player.Character
+	if not character then return end
+
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoidRootPart then return end
+
+	-- Create beam parts
+	local beamPart = Instance.new("Part")
+	beamPart.Anchored = true
+	beamPart.CanCollide = false
+	beamPart.Material = Enum.Material.Neon
+	beamPart.Color = rarityColor
+	beamPart.Size = Vector3.new(5, 50, 5)
+	beamPart.CFrame = humanoidRootPart.CFrame * CFrame.new(0, 25, 0)
+	beamPart.Transparency = 0.6
+	beamPart.Parent = workspace
+
+	-- Tween the beam
+	local tweenInfo = TweenInfo.new(
+		0.75,
+		Enum.EasingStyle.Quad,
+		Enum.EasingDirection.Out
+	)
+
+	local tween = TweenService:Create(beamPart, tweenInfo, {
+		Transparency = 1,
+		Size = Vector3.new(8, 50, 8)
+	})
+
+	tween:Play()
+
+	-- Destroy after animation
+	task.delay(0.75, function()
+		beamPart:Destroy()
+	end)
+end
+
+-- Create a ring effect expanding outward
+function RollEffects.CreateRingEffect(player, rarityColor)
+	local character = player.Character
+	if not character then return end
+
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoidRootPart then return end
+
+	-- Create ring
+	local ring = Instance.new("Part")
+	ring.Anchored = true
+	ring.CanCollide = false
+	ring.Material = Enum.Material.Neon
+	ring.Color = rarityColor
+	ring.Size = Vector3.new(1, 0.5, 1)
+	ring.Shape = Enum.PartType.Cylinder
+	ring.CFrame = humanoidRootPart.CFrame * CFrame.Angles(0, 0, math.rad(90))
+	ring.Transparency = 0.5
+	ring.Parent = workspace
+
+	-- Tween the ring
+	local tweenInfo = TweenInfo.new(
+		0.5,
+		Enum.EasingStyle.Quad,
+		Enum.EasingDirection.Out
+	)
+
+	local tween = TweenService:Create(ring, tweenInfo, {
+		Transparency = 1,
+		Size = Vector3.new(20, 0.5, 20)
+	})
+
+	tween:Play()
+
+	-- Destroy after animation
+	task.delay(0.5, function()
+		ring:Destroy()
+	end)
+end
+
+-- Screen flash effect
+function RollEffects.CreateScreenFlash(rarityColor, intensity)
+	local player = game.Players.LocalPlayer
+	if not player then return end
+
+	local playerGui = player:WaitForChild("PlayerGui")
+
+	-- Create flash frame
+	local flashFrame = Instance.new("Frame")
+	flashFrame.Name = "FlashEffect"
+	flashFrame.Size = UDim2.new(1, 0, 1, 0)
+	flashFrame.Position = UDim2.new(0, 0, 0, 0)
+	flashFrame.BackgroundColor3 = rarityColor
+	flashFrame.BackgroundTransparency = 1
+	flashFrame.ZIndex = 1000
+	flashFrame.Parent = playerGui
+
+	-- Tween flash in and out
+	local tweenInfo = TweenInfo.new(
+		0.3,
+		Enum.EasingStyle.Quad,
+		Enum.EasingDirection.InOut
+	)
+
+	local tweenIn = TweenService:Create(flashFrame, tweenInfo, {
+		BackgroundTransparency = 1 - intensity
+	})
+
+	local tweenOut = TweenService:Create(flashFrame, tweenInfo, {
+		BackgroundTransparency = 1
+	})
+
+	tweenIn:Play()
+	tweenIn.Completed:Connect(function()
+		tweenOut:Play()
+	end)
+
+	-- Destroy after animation
+	task.delay(0.6, function()
+		flashFrame:Destroy()
+	end)
+end
+
+-- Combined effect based on rarity
+function RollEffects.PlayRollEffects(player, rarity, rarityColor, rarityIndex)
+	-- Always play particles
+	RollEffects.CreateRollParticles(player, rarityColor)
+
+	-- Additional effects for rare items
+	if rarityIndex &gt;= 4 then -- Epic and above
+		RollEffects.CreateRingEffect(player, rarityColor)
+	end
+
+	if rarityIndex &gt;= 5 then -- Legendary and above
+		RollEffects.CreateBeamEffect(player, rarityColor)
+		RollEffects.CreateScreenFlash(rarityColor, 0.3)
+	end
+
+	if rarityIndex &gt;= 7 then -- Divine and above
+		RollEffects.CreateScreenFlash(rarityColor, 0.5)
+		-- Extra particles
+		task.delay(0.5, function()
+			RollEffects.CreateRollParticles(player, rarityColor)
+		end)
+	end
+end
+
+return RollEffects</string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="21">
+          <Properties>
+            <string name="Name">UIHandler</string>
+            <string name="Source"><![CDATA[local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local UIHandler = {}
+
+-- Create the main RNG UI
+function UIHandler.CreateUI(playerGui)
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "RNGGui"
+	screenGui.ResetOnSpawn = false
+	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	screenGui.DisplayOrder = 10
+	screenGui.Parent = playerGui
+
+	-- Main frame
+	local mainFrame = Instance.new("Frame")
+	mainFrame.Name = "MainFrame"
+	mainFrame.Size = UDim2.new(0.9, 0, 0, 60)
+	mainFrame.Position = UDim2.new(0.5, 0, 1, -70)
+	mainFrame.AnchorPoint = Vector2.new(0.5, 1)
+	mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+	mainFrame.BackgroundTransparency = 0.8
+	mainFrame.BorderSizePixel = 0
+	mainFrame.Active = false -- Don't block clicks on transparent areas
+	mainFrame.Parent = screenGui
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 15)
+	corner.Parent = mainFrame
+
+	local stroke = Instance.new("UIStroke")
+	stroke.Color = Color3.fromRGB(100, 100, 120)
+	stroke.Thickness = 2
+	stroke.Parent = mainFrame
+
+	-- Result Frame
+	local resultFrame = Instance.new("Frame")
+	resultFrame.Name = "ResultFrame"
+	resultFrame.Size = UDim2.new(0.9, 0, 0, 140)
+	resultFrame.Position = UDim2.new(0.5, 0, 0, -160)
+	resultFrame.AnchorPoint = Vector2.new(0.5, 0)
+	resultFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+	resultFrame.BackgroundTransparency = 1
+	resultFrame.BorderSizePixel = 0
+	resultFrame.Active = false -- Don't block clicks
+	resultFrame.Parent = screenGui
+
+	local resultCorner = Instance.new("UICorner")
+	resultCorner.CornerRadius = UDim.new(0, 10)
+	resultCorner.Parent = resultFrame
+
+	-- Result text
+	local resultText = Instance.new("TextLabel")
+	resultText.Name = "ResultText"
+	resultText.Size = UDim2.new(1, -20, 0, 40)
+	resultText.Position = UDim2.new(0, 10, 0, 10)
+	resultText.BackgroundTransparency = 1
+	resultText.Text = "Click Roll to Start!"
+	resultText.TextColor3 = Color3.fromRGB(200, 200, 200)
+	resultText.TextSize = 22
+	resultText.Font = Enum.Font.GothamBold
+	resultText.TextWrapped = true
+	resultText.Parent = resultFrame
+
+	local rarityText = Instance.new("TextLabel")
+	rarityText.Name = "RarityText"
+	rarityText.Size = UDim2.new(1, -20, 0, 30)
+	rarityText.Position = UDim2.new(0, 10, 0, 55)
+	rarityText.BackgroundTransparency = 1
+	rarityText.Text = ""
+	rarityText.TextColor3 = Color3.fromRGB(255, 255, 255)
+	rarityText.TextSize = 18
+	rarityText.Font = Enum.Font.Gotham
+	rarityText.Parent = resultFrame
+
+	local descText = Instance.new("TextLabel")
+	descText.Name = "DescriptionText"
+	descText.Size = UDim2.new(1, -20, 0, 35)
+	descText.Position = UDim2.new(0, 10, 0, 90)
+	descText.BackgroundTransparency = 1
+	descText.Text = ""
+	descText.TextColor3 = Color3.fromRGB(255, 255, 255)
+	descText.TextSize = 15
+	descText.Font = Enum.Font.Gotham
+	descText.TextWrapped = true
+	descText.Parent = resultFrame
+
+	local chanceText = Instance.new("TextLabel")
+	chanceText.Name = "ChanceText"
+	chanceText.Size = UDim2.new(1, -20, 0, 25)
+	chanceText.Position = UDim2.new(0, 10, 0, 125)
+	chanceText.BackgroundTransparency = 1
+	chanceText.Text = ""
+	chanceText.TextColor3 = Color3.fromRGB(255, 255, 255)
+	chanceText.TextSize = 13
+	chanceText.Font = Enum.Font.Gotham
+	chanceText.Parent = resultFrame
+
+	-- Roll button
+	local rollButton = Instance.new("TextButton")
+	rollButton.Name = "RollButton"
+	rollButton.Size = UDim2.new(0.3, 0, 1, -5)
+	rollButton.Position = UDim2.new(0.5, 0, 0, 5)
+	rollButton.AnchorPoint = Vector2.new(0.5, 0)
+	rollButton.BackgroundColor3 = Color3.fromRGB(50, 150, 250)
+	rollButton.BackgroundTransparency = 0.2
+	rollButton.BorderSizePixel = 0
+	rollButton.Text = "ROLL"
+	rollButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	rollButton.TextSize = 20
+	rollButton.Font = Enum.Font.GothamBold
+	rollButton.AutoButtonColor = false
+	rollButton.Parent = mainFrame
+
+	local buttonCorner = Instance.new("UICorner")
+	buttonCorner.CornerRadius = UDim.new(0, 10)
+	buttonCorner.Parent = rollButton
+
+	-- Cooldown text
+	local cooldownText = Instance.new("TextLabel")
+	cooldownText.Name = "CooldownText"
+	cooldownText.Size = UDim2.new(0.7, -10, 0, 25)
+	cooldownText.Position = UDim2.new(0, 60, 0, 0)
+	cooldownText.BackgroundTransparency = 1
+	cooldownText.Text = ""
+	cooldownText.TextColor3 = Color3.fromRGB(255, 100, 100)
+	cooldownText.TextSize = 16
+	cooldownText.Font = Enum.Font.Gotham
+	cooldownText.Parent = mainFrame
+
+	-- Inventory button
+	local inventoryButton = Instance.new("TextButton")
+	inventoryButton.Name = "InventoryButton"
+	inventoryButton.Size = UDim2.new(0, 60, 1, -10)
+	inventoryButton.Position = UDim2.new(1, -5, 0, 5)
+	inventoryButton.AnchorPoint = Vector2.new(1, 0)
+	inventoryButton.BackgroundColor3 = Color3.fromRGB(100, 200, 100)
+	inventoryButton.BackgroundTransparency = 0.2
+	inventoryButton.BorderSizePixel = 0
+	inventoryButton.Text = "INV"
+	inventoryButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	inventoryButton.TextSize = 16
+	inventoryButton.Font = Enum.Font.GothamBold
+	inventoryButton.Parent = mainFrame
+
+	local invCorner = Instance.new("UICorner")
+	invCorner.CornerRadius = UDim.new(0, 8)
+	invCorner.Parent = inventoryButton
+
+	-- Collection button
+	local collectionButton = Instance.new("TextButton")
+	collectionButton.Name = "CollectionButton"
+	collectionButton.Size = UDim2.new(0, 60, 1, -10)
+	collectionButton.Position = UDim2.new(0, 5, 0, 5)
+	collectionButton.BackgroundColor3 = Color3.fromRGB(200, 150, 50)
+	collectionButton.BackgroundTransparency = 0.2
+	collectionButton.BorderSizePixel = 0
+	collectionButton.Text = "COL"
+	collectionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	collectionButton.TextSize = 14
+	collectionButton.Font = Enum.Font.GothamBold
+	collectionButton.Parent = mainFrame
+
+	local collectionCorner = Instance.new("UICorner")
+	collectionCorner.CornerRadius = UDim.new(0, 8)
+	collectionCorner.Parent = collectionButton
+
+	-- Crafting button
+	local craftingButton = Instance.new("TextButton")
+	craftingButton.Name = "CraftingButton"
+	craftingButton.Size = UDim2.new(0, 60, 1, -10)
+	craftingButton.Position = UDim2.new(0, 70, 0, 5)
+	craftingButton.BackgroundColor3 = Color3.fromRGB(150, 100, 200)
+	craftingButton.BackgroundTransparency = 0.2
+	craftingButton.BorderSizePixel = 0
+	craftingButton.Text = "CRAFT"
+	craftingButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	craftingButton.TextSize = 14
+	craftingButton.Font = Enum.Font.GothamBold
+	craftingButton.Parent = mainFrame
+
+	local craftingCorner = Instance.new("UICorner")
+	craftingCorner.CornerRadius = UDim.new(0, 8)
+	craftingCorner.Parent = craftingButton
+
+	-- Crafted Inventory button
+	local craftedInventoryButton = Instance.new("TextButton")
+	craftedInventoryButton.Name = "CraftedInventoryButton"
+	craftedInventoryButton.Size = UDim2.new(0, 60, 1, -10)
+	craftedInventoryButton.Position = UDim2.new(0, 135, 0, 5)
+	craftedInventoryButton.BackgroundColor3 = Color3.fromRGB(200, 100, 200)
+	craftedInventoryButton.BackgroundTransparency = 0.2
+	craftedInventoryButton.BorderSizePixel = 0
+	craftedInventoryButton.Text = "C-INV"
+	craftedInventoryButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	craftedInventoryButton.TextSize = 14
+	craftedInventoryButton.Font = Enum.Font.GothamBold
+	craftedInventoryButton.Parent = mainFrame
+
+	local craftedInvCorner = Instance.new("UICorner")
+	craftedInvCorner.CornerRadius = UDim.new(0, 8)
+	craftedInvCorner.Parent = craftedInventoryButton
+
+	-- Auto-roll button
+	local autoRollButton = Instance.new("TextButton")
+	autoRollButton.Name = "AutoRollButton"
+	autoRollButton.Size = UDim2.new(0, 50, 0, 50)
+	autoRollButton.Position = UDim2.new(1, -55, 0, -55)
+	autoRollButton.AnchorPoint = Vector2.new(1, 1)
+	autoRollButton.BackgroundColor3 = Color3.fromRGB(150, 100, 200)
+	autoRollButton.BackgroundTransparency = 0.2
+	autoRollButton.BorderSizePixel = 0
+	autoRollButton.Text = "AUTO"
+	autoRollButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	autoRollButton.TextSize = 12
+	autoRollButton.Font = Enum.Font.GothamBold
+	autoRollButton.Parent = mainFrame
+
+	local autoRollCorner = Instance.new("UICorner")
+	autoRollCorner.CornerRadius = UDim.new(0, 8)
+	autoRollCorner.Parent = autoRollButton
+
+	return screenGui
+end
+
+-- Update result with slide animation
+function UIHandler.UpdateResult(gui, rollResult)
+	local resultFrame = gui:FindFirstChild("ResultFrame")
+	if not resultFrame then return end
+
+	local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+	local electronCount = RNGConfig.GetElectronCount(rollResult.ItemName)
+
+	resultFrame.ResultText.Text = rollResult.ItemName
+	resultFrame.RarityText.Text = rollResult.Rarity
+	resultFrame.RarityText.TextColor3 = rollResult.RarityColor
+	resultFrame.DescriptionText.Text = rollResult.ItemDescription
+	resultFrame.ChanceText.Text = string.format("Chance: %.2f%% | Electrons: %d", rollResult.RarityChance, electronCount)
+
+	local tweenIn = TweenService:Create(
+		resultFrame,
+		TweenInfo.new(0.4, Enum.EasingStyle.Back),
+		{ Position = UDim2.new(0.5, 0, 0, 20) }
+	)
+	tweenIn:Play()
+
+	task.delay(2, function()
+		local tweenOut = TweenService:Create(
+			resultFrame,
+			TweenInfo.new(0.4, Enum.EasingStyle.Quad),
+			{ Position = UDim2.new(0.5, 0, 0, -160) }
+		)
+		tweenOut:Play()
+	end)
+end
+
+-- Update cooldown
+function UIHandler.UpdateCooldown(gui, timeRemaining)
+	local mainFrame = gui:FindFirstChild("MainFrame")
+	if not mainFrame then return end
+
+	local cooldownText = mainFrame:FindFirstChild("CooldownText")
+	if cooldownText then
+		if timeRemaining > 0 then
+			cooldownText.Text = string.format("Cooldown: %.1fs", timeRemaining)
+		else
+			cooldownText.Text = ""
+		end
+	end
+end
+
+-- Enable/disable roll button
+function UIHandler.SetRollButtonEnabled(gui, enabled)
+	local mainFrame = gui:FindFirstChild("MainFrame")
+	if not mainFrame then return end
+
+	local rollButton = mainFrame:FindFirstChild("RollButton")
+	if rollButton then
+		rollButton.BackgroundColor3 = enabled and Color3.fromRGB(50, 150, 250) or Color3.fromRGB(100, 100, 100)
+		rollButton.Text = enabled and "ROLL" or "ROLLING..."
+	end
+end
+
+-- Auto-roll toggle
+function UIHandler.SetAutoRollState(gui, isActive)
+	local mainFrame = gui:FindFirstChild("MainFrame")
+	if not mainFrame then return end
+
+	local autoButton = mainFrame:FindFirstChild("AutoRollButton")
+	if autoButton then
+		autoButton.BackgroundColor3 = isActive and Color3.fromRGB(200, 100, 100) or Color3.fromRGB(150, 100, 200)
+		autoButton.Text = isActive and "STOP" or "AUTO"
+	end
+end
+-- Create Collection UI
+function UIHandler.CreateCollectionUI(playerGui, inventory)
+	local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+
+	-- Extract unique item names from inventory
+	local ownedItems = {}
+	local seenItems = {}
+	for _, item in ipairs(inventory) do
+		if not seenItems[item.ItemName] then
+			seenItems[item.ItemName] = true
+			table.insert(ownedItems, item.ItemName)
+		end
+	end
+
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "CollectionGui"
+	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	screenGui.DisplayOrder = 100
+	screenGui.Parent = playerGui
+
+	local mainFrame = Instance.new("Frame")
+	mainFrame.Name = "MainFrame"
+	mainFrame.Size = UDim2.new(0.8, 0, 0.8, 0)
+	mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+	mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+	mainFrame.BorderSizePixel = 0
+	mainFrame.Parent = screenGui
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 15)
+	corner.Parent = mainFrame
+
+	-- Count total items in config
+	local totalItems = 0
+	for _, items in pairs(RNGConfig.Items) do
+		totalItems = totalItems + #items
+	end
+
+	local title = Instance.new("TextLabel")
+	title.Size = UDim2.new(1, -70, 0, 50)
+	title.Position = UDim2.new(0, 10, 0, 10)
+	title.BackgroundTransparency = 1
+	title.Text = "COLLECTION (" .. #ownedItems .. "/" .. totalItems .. ")"
+	title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	title.TextSize = 20
+	title.Font = Enum.Font.GothamBold
+	title.Parent = mainFrame
+
+	local closeButton = Instance.new("TextButton")
+	closeButton.Size = UDim2.new(0, 60, 0, 60)
+	closeButton.Position = UDim2.new(1, -70, 0, 10)
+	closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+	closeButton.Text = "✕"
+	closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	closeButton.TextSize = 30
+	closeButton.Font = Enum.Font.GothamBold
+	closeButton.Parent = mainFrame
+
+	local closeCorner = Instance.new("UICorner")
+	closeCorner.CornerRadius = UDim.new(0, 8)
+	closeCorner.Parent = closeButton
+
+	local scrollFrame = Instance.new("ScrollingFrame")
+	scrollFrame.Name = "ScrollFrame"
+	scrollFrame.Size = UDim2.new(1, -20, 1, -80)
+	scrollFrame.Position = UDim2.new(0, 10, 0, 70)
+	scrollFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+	scrollFrame.BorderSizePixel = 0
+	scrollFrame.ScrollBarThickness = 10
+	scrollFrame.Parent = mainFrame
+
+	local scrollCorner = Instance.new("UICorner")
+	scrollCorner.CornerRadius = UDim.new(0, 10)
+	scrollCorner.Parent = scrollFrame
+
+	local layout = Instance.new("UIGridLayout")
+	layout.CellSize = UDim2.new(0, 120, 0, 120)
+	layout.CellPadding = UDim2.new(0, 10, 0, 10)
+	layout.Parent = scrollFrame
+
+	-- Create ALL items sorted by rarity (owned and unowned)
+	for _, rarity in ipairs(RNGConfig.Rarities) do
+		local items = RNGConfig.Items[rarity.Name]
+		if items then
+			for _, item in ipairs(items) do
+				-- Check if player owns this item
+				local isOwned = false
+				for _, ownedName in ipairs(ownedItems) do
+					if ownedName == item.Name then
+						isOwned = true
+						break
+					end
+				end
+
+				local itemFrame = Instance.new("Frame")
+				itemFrame.Size = UDim2.new(1, 0, 1, 0)
+				-- Different background for owned vs unowned
+				itemFrame.BackgroundColor3 = isOwned and Color3.fromRGB(40, 60, 50) or Color3.fromRGB(40, 40, 50)
+				itemFrame.BackgroundTransparency = isOwned and 0 or 0.3
+				itemFrame.BorderSizePixel = 0
+				itemFrame.Parent = scrollFrame
+
+				local itemCorner = Instance.new("UICorner")
+				itemCorner.CornerRadius = UDim.new(0, 10)
+				itemCorner.Parent = itemFrame
+
+				local stroke = Instance.new("UIStroke")
+				stroke.Color = rarity.Color
+				stroke.Thickness = isOwned and 3 or 1
+				stroke.Transparency = isOwned and 0 or 0.5
+				stroke.Parent = itemFrame
+
+				if isOwned then
+					-- OWNED: Show full details
+					local nameLabel = Instance.new("TextLabel")
+					nameLabel.Size = UDim2.new(1, -10, 0, 30)
+					nameLabel.Position = UDim2.new(0, 5, 0, 5)
+					nameLabel.BackgroundTransparency = 1
+					nameLabel.Text = item.Name
+					nameLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+					nameLabel.TextSize = 16
+					nameLabel.Font = Enum.Font.GothamBold
+					nameLabel.TextWrapped = true
+					nameLabel.Parent = itemFrame
+
+					local descLabel = Instance.new("TextLabel")
+					descLabel.Size = UDim2.new(1, -10, 0, 35)
+					descLabel.Position = UDim2.new(0, 5, 0, 35)
+					descLabel.BackgroundTransparency = 1
+					descLabel.Text = item.Description
+					descLabel.TextColor3 = Color3.fromRGB(200, 255, 200)
+					descLabel.TextSize = 11
+					descLabel.Font = Enum.Font.Gotham
+					descLabel.TextWrapped = true
+					descLabel.Parent = itemFrame
+
+					local rarityLabel = Instance.new("TextLabel")
+					rarityLabel.Size = UDim2.new(1, -10, 0, 25)
+					rarityLabel.Position = UDim2.new(0, 5, 0, 70)
+					rarityLabel.BackgroundTransparency = 1
+					rarityLabel.Text = rarity.Name
+					rarityLabel.TextColor3 = rarity.Color
+					rarityLabel.TextSize = 13
+					rarityLabel.Font = Enum.Font.GothamBold
+					rarityLabel.Parent = itemFrame
+
+					local chanceLabel = Instance.new("TextLabel")
+					chanceLabel.Size = UDim2.new(1, -10, 0, 20)
+					chanceLabel.Position = UDim2.new(0, 5, 0, 95)
+					chanceLabel.BackgroundTransparency = 1
+					chanceLabel.Text = string.format("Chance: %.3f%%", rarity.Chance)
+					chanceLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+					chanceLabel.TextSize = 10
+					chanceLabel.Font = Enum.Font.Gotham
+					chanceLabel.Parent = itemFrame
+				else
+					-- NOT OWNED: Show only name, rarity, and chance
+					local nameLabel = Instance.new("TextLabel")
+					nameLabel.Size = UDim2.new(1, -10, 0, 40)
+					nameLabel.Position = UDim2.new(0, 5, 0, 5)
+					nameLabel.BackgroundTransparency = 1
+					nameLabel.Text = "???"
+					nameLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+					nameLabel.TextSize = 20
+					nameLabel.Font = Enum.Font.GothamBold
+					nameLabel.Parent = itemFrame
+
+					local rarityLabel = Instance.new("TextLabel")
+					rarityLabel.Size = UDim2.new(1, -10, 0, 25)
+					rarityLabel.Position = UDim2.new(0, 5, 0, 45)
+					rarityLabel.BackgroundTransparency = 1
+					rarityLabel.Text = rarity.Name
+					rarityLabel.TextColor3 = rarity.Color
+					rarityLabel.TextSize = 13
+					rarityLabel.Font = Enum.Font.GothamBold
+					rarityLabel.Parent = itemFrame
+
+					local chanceLabel = Instance.new("TextLabel")
+					chanceLabel.Size = UDim2.new(1, -10, 0, 25)
+					chanceLabel.Position = UDim2.new(0, 5, 0, 70)
+					chanceLabel.BackgroundTransparency = 1
+					chanceLabel.Text = string.format("Chance: %.3f%%", rarity.Chance)
+					chanceLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+					chanceLabel.TextSize = 12
+					chanceLabel.Font = Enum.Font.Gotham
+					chanceLabel.Parent = itemFrame
+				end
+			end
+		end
+	end
+
+	scrollFrame.CanvasSize = UDim2.new(0, 0, 0, layout.AbsoluteContentSize.Y + 10)
+
+	closeButton.MouseButton1Click:Connect(function()
+		screenGui:Destroy()
+	end)
+
+	return screenGui
+end
+
+-- Create Crafting UI
+function UIHandler.CreateCraftingUI(playerGui, groupedInventory, recipes)
+	local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+
+	---------------------------------------------------------------------
+	-- HELPERS
+	---------------------------------------------------------------------
+
+	-- Check if an item is used as an ingredient in any recipe
+	local function isIngredient(itemName)
+		for _, recipe in ipairs(recipes) do
+			for _, ingredient in ipairs(recipe.Ingredients) do
+				if ingredient.Name == itemName then
+					return true
+				end
+			end
+		end
+		return false
+	end
+
+	-- Check if an item is the result of any recipe
+	local function isCraftedResult(itemName)
+		for _, recipe in ipairs(recipes) do
+			if recipe.Result.Name == itemName then
+				return true
+			end
+		end
+		return false
+	end
+
+	---------------------------------------------------------------------
+	-- MAIN GUI
+	---------------------------------------------------------------------
+
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "CraftingGui"
+	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	screenGui.DisplayOrder = 100
+	screenGui.Parent = playerGui
+
+	local craftingFrame = Instance.new("Frame")
+	craftingFrame.Name = "CraftingFrame"
+	craftingFrame.Size = UDim2.new(0.9, 0, 0.8, 0)
+	craftingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	craftingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+	craftingFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+	craftingFrame.BorderSizePixel = 0
+	craftingFrame.Parent = screenGui
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 15)
+	corner.Parent = craftingFrame
+
+	local title = Instance.new("TextLabel")
+	title.Size = UDim2.new(1, -70, 0, 50)
+	title.Position = UDim2.new(0, 10, 0, 10)
+	title.BackgroundTransparency = 1
+	title.Text = "CRAFTING"
+	title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	title.TextSize = 20
+	title.Font = Enum.Font.GothamBold
+	title.Parent = craftingFrame
+
+	local closeButton = Instance.new("TextButton")
+	closeButton.Size = UDim2.new(0, 60, 0, 60)
+	closeButton.Position = UDim2.new(1, -70, 0, 10)
+	closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+	closeButton.Text = "✕"
+	closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	closeButton.TextSize = 30
+	closeButton.Font = Enum.Font.GothamBold
+	closeButton.Parent = craftingFrame
+
+	local closeCorner = Instance.new("UICorner")
+	closeCorner.CornerRadius = UDim.new(0, 8)
+	closeCorner.Parent = closeButton
+
+	local contentFrame = Instance.new("Frame")
+	contentFrame.Name = "ContentFrame"
+	contentFrame.Size = UDim2.new(1, -20, 1, -80)
+	contentFrame.Position = UDim2.new(0, 10, 0, 70)
+	contentFrame.BackgroundTransparency = 1
+	contentFrame.Parent = craftingFrame
+
+	---------------------------------------------------------------------
+	-- LEFT SIDE: RECIPES
+	---------------------------------------------------------------------
+
+	local recipesFrame = Instance.new("Frame")
+	recipesFrame.Name = "RecipesFrame"
+	recipesFrame.Size = UDim2.new(0.5, -5, 1, 0)
+	recipesFrame.Position = UDim2.new(0, 0, 0, 0)
+	recipesFrame.BackgroundTransparency = 1
+	recipesFrame.Parent = contentFrame
+
+	local recipesTitle = Instance.new("TextLabel")
+	recipesTitle.Size = UDim2.new(1, 0, 0, 30)
+	recipesTitle.BackgroundTransparency = 1
+	recipesTitle.Text = "RECIPES"
+	recipesTitle.TextColor3 = Color3.fromRGB(200, 200, 200)
+	recipesTitle.TextSize = 16
+	recipesTitle.Font = Enum.Font.GothamBold
+	recipesTitle.Parent = recipesFrame
+
+	local recipesScroll = Instance.new("ScrollingFrame")
+	recipesScroll.Name = "RecipesScroll"
+	recipesScroll.Size = UDim2.new(1, 0, 1, -30)
+	recipesScroll.Position = UDim2.new(0, 0, 0, 30)
+	recipesScroll.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+	recipesScroll.BorderSizePixel = 0
+	recipesScroll.ScrollBarThickness = 10
+	recipesScroll.Parent = recipesFrame
+
+	local recipesCorner = Instance.new("UICorner")
+	recipesCorner.CornerRadius = UDim.new(0, 10)
+	recipesCorner.Parent = recipesScroll
+
+	local recipesLayout = Instance.new("UIListLayout")
+	recipesLayout.Padding = UDim.new(0, 5)
+	recipesLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	recipesLayout.Parent = recipesScroll
+
+	---------------------------------------------------------------------
+	-- RIGHT SIDE: RECIPE DETAILS
+	---------------------------------------------------------------------
+
+	local detailsFrame = Instance.new("Frame")
+	detailsFrame.Name = "DetailsFrame"
+	detailsFrame.Size = UDim2.new(0.5, -5, 1, 0)
+	detailsFrame.Position = UDim2.new(0.5, 5, 0, 0)
+	detailsFrame.BackgroundTransparency = 1
+	detailsFrame.Parent = contentFrame
+
+	local detailsTitle = Instance.new("TextLabel")
+	detailsTitle.Name = "DetailsTitle"
+	detailsTitle.Size = UDim2.new(1, 0, 0, 30)
+	detailsTitle.BackgroundTransparency = 1
+	detailsTitle.Text = "SELECT A RECIPE"
+	detailsTitle.TextColor3 = Color3.fromRGB(200, 200, 200)
+	detailsTitle.TextSize = 16
+	detailsTitle.Font = Enum.Font.GothamBold
+	detailsTitle.Parent = detailsFrame
+
+	local detailsScroll = Instance.new("ScrollingFrame")
+	detailsScroll.Name = "DetailsScroll"
+	detailsScroll.Size = UDim2.new(1, 0, 1, -30)
+	detailsScroll.Position = UDim2.new(0, 0, 0, 30)
+	detailsScroll.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+	detailsScroll.BorderSizePixel = 0
+	detailsScroll.ScrollBarThickness = 10
+	detailsScroll.Parent = detailsFrame
+
+	local detailsCorner = Instance.new("UICorner")
+	detailsCorner.CornerRadius = UDim.new(0, 10)
+	detailsCorner.Parent = detailsScroll
+
+	local detailsLayout = Instance.new("UIListLayout")
+	detailsLayout.Padding = UDim.new(0, 5)
+	detailsLayout.Parent = detailsScroll
+
+	---------------------------------------------------------------------
+	-- POPULATE RECIPES
+	---------------------------------------------------------------------
+
+	closeButton.MouseButton1Click:Connect(function()
+		screenGui:Destroy()
+	end)
+
+	return {
+		Gui = screenGui,
+		RecipesScroll = recipesScroll,
+		DetailsScroll = detailsScroll,
+		DetailsTitle = detailsTitle
+	}
+end
+-- Helper: Get Rarity Color
+local function getRarityColor(rarityName)
+	local RNGConfig = require(ReplicatedStorage:WaitForChild("RNGConfig"))
+	for _, r in ipairs(RNGConfig.Rarities) do
+		if r.Name == rarityName then
+			return r.Color
+		end
+	end
+	return Color3.fromRGB(200, 200, 200)
+end
+
+-- Create Pedestal Selection UI
+function UIHandler.CreatePedestalSelectionUI(playerGui, craftedItems, itemStand)
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "PedestalSelectionGui"
+	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	screenGui.DisplayOrder = 110
+	screenGui.Parent = playerGui
+
+	local mainFrame = Instance.new("Frame")
+	mainFrame.Name = "MainFrame"
+	mainFrame.Size = UDim2.new(0.6, 0, 0.7, 0)
+	mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+	mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+	mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+	mainFrame.BorderSizePixel = 0
+	mainFrame.Parent = screenGui
+
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 15)
+	corner.Parent = mainFrame
+
+	local title = Instance.new("TextLabel")
+	title.Size = UDim2.new(1, -70, 0, 50)
+	title.Position = UDim2.new(0, 10, 0, 10)
+	title.BackgroundTransparency = 1
+	title.Text = "SELECT ITEM TO DISPLAY"
+	title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	title.TextSize = 20
+	title.Font = Enum.Font.GothamBold
+	title.Parent = mainFrame
+
+	local closeButton = Instance.new("TextButton")
+	closeButton.Size = UDim2.new(0, 40, 0, 40)
+	closeButton.Position = UDim2.new(1, -50, 0, 10)
+	closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+	closeButton.Text = "✕"
+	closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	closeButton.TextSize = 20
+	closeButton.Font = Enum.Font.GothamBold
+	closeButton.Parent = mainFrame
+
+	local closeCorner = Instance.new("UICorner")
+	closeCorner.CornerRadius = UDim.new(0, 8)
+	closeCorner.Parent = closeButton
+
+	local scrollFrame = Instance.new("ScrollingFrame")
+	scrollFrame.Size = UDim2.new(1, -20, 1, -80)
+	scrollFrame.Position = UDim2.new(0, 10, 0, 70)
+	scrollFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+	scrollFrame.BorderSizePixel = 0
+	scrollFrame.ScrollBarThickness = 8
+	scrollFrame.Parent = mainFrame
+
+	local listLayout = Instance.new("UIListLayout")
+	listLayout.Padding = UDim.new(0, 5)
+	listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	listLayout.Parent = scrollFrame
+
+	if #craftedItems == 0 then
+		local noItems = Instance.new("TextLabel")
+		noItems.Size = UDim2.new(1, 0, 0, 100)
+		noItems.BackgroundTransparency = 1
+		noItems.Text = "You haven't crafted any items yet!"
+		noItems.TextColor3 = Color3.fromRGB(150, 150, 150)
+		noItems.TextSize = 16
+		noItems.Font = Enum.Font.Gotham
+		noItems.Parent = scrollFrame
+	end
+
+	for _, item in ipairs(craftedItems) do
+		local itemButton = Instance.new("TextButton")
+		itemButton.Size = UDim2.new(1, -10, 0, 60)
+		itemButton.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+		itemButton.BorderSizePixel = 0
+		itemButton.Text = ""
+		itemButton.AutoButtonColor = true
+		itemButton.Parent = scrollFrame
+
+		local itemCorner = Instance.new("UICorner")
+		itemCorner.CornerRadius = UDim.new(0, 8)
+		itemCorner.Parent = itemButton
+
+		local rarityColor = getRarityColor(item.Rarity)
+		local stroke = Instance.new("UIStroke")
+		stroke.Color = rarityColor
+		stroke.Thickness = 1
+		stroke.Parent = itemButton
+
+		local nameLabel = Instance.new("TextLabel")
+		nameLabel.Size = UDim2.new(1, -20, 0, 30)
+		nameLabel.Position = UDim2.new(0, 10, 0, 5)
+		nameLabel.BackgroundTransparency = 1
+		nameLabel.Text = item.ItemName
+		nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+		nameLabel.TextSize = 18
+		nameLabel.Font = Enum.Font.GothamBold
+		nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+		nameLabel.Parent = itemButton
+
+		local rarityLabel = Instance.new("TextLabel")
+		rarityLabel.Size = UDim2.new(1, -20, 0, 20)
+		rarityLabel.Position = UDim2.new(0, 10, 0, 30)
+		rarityLabel.BackgroundTransparency = 1
+		rarityLabel.Text = item.Rarity
+		rarityLabel.TextColor3 = rarityColor
+		rarityLabel.TextSize = 14
+		rarityLabel.Font = Enum.Font.Gotham
+		rarityLabel.TextXAlignment = Enum.TextXAlignment.Left
+		rarityLabel.Parent = itemButton
+
+		itemButton.MouseButton1Click:Connect(function()
+			local PlaceItemEvent = ReplicatedStorage.RemoteEvents:WaitForChild("PlaceItemOnPedestal")
+			if PlaceItemEvent then
+				PlaceItemEvent:FireServer(itemStand, item.ItemName)
+			end
+			screenGui:Destroy()
+		end)
+	end
+
+	scrollFrame.CanvasSize = UDim2.new(0, 0, 0, listLayout.AbsoluteContentSize.Y + 10)
+
+	closeButton.MouseButton1Click:Connect(function()
+		screenGui:Destroy()
+	end)
+
+	return screenGui
+end
+
+return UIHandler
+]]></string>
+          </Properties>
+        </Item>
+      </Item>
+    </Item>
+  </Item>
+</roblox>

@@ -188,8 +188,21 @@ task.spawn(function()
 		warn("[RNGClient] OpenPedestalSelection event not found after 30s!")
 		return
 	end
+	
+	print("[RNGClient] Successfully found OpenPedestalSelection event. Listening for triggers.")
+	
 	OpenPedestalSelectionEvent.OnClientEvent:Connect(function(itemStand, craftedItems)
-		UIHandler.CreatePedestalSelectionUI(playerGui, craftedItems, itemStand)
+		print("[RNGClient] Received OpenPedestalSelection event from server! Items:", craftedItems and #craftedItems or "nil")
+		
+		local success, err = pcall(function()
+			UIHandler.CreatePedestalSelectionUI(playerGui, craftedItems, itemStand)
+		end)
+		
+		if not success then
+			warn("[RNGClient] Error creating Pedestal Selection UI:", err)
+		else
+			print("[RNGClient] Pedestal Selection UI created successfully.")
+		end
 	end)
 end)
 

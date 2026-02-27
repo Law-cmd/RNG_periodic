@@ -798,7 +798,13 @@ function UIHandler.CreatePedestalSelectionUI(playerGui, craftedItems, itemStand)
 		end)
 	end
 
-	scrollFrame.CanvasSize = UDim2.new(0, 0, 0, listLayout.AbsoluteContentSize.Y + 10)
+	-- Wait a frame for UIListLayout to update its AbsoluteContentSize
+	task.spawn(function()
+		task.wait()
+		if scrollFrame and listLayout then
+			scrollFrame.CanvasSize = UDim2.new(0, 0, 0, listLayout.AbsoluteContentSize.Y + 10)
+		end
+	end)
 
 	closeButton.MouseButton1Click:Connect(function()
 		screenGui:Destroy()

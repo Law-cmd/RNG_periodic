@@ -6,7 +6,6 @@
       "$className": "ReplicatedStorage",
       "CraftingRecipes": {
         "$path": "CraftingRecipes.luau"
-
       },
       "RNGSystem": {
         "$path": "RNGSystem.luau"
@@ -20,24 +19,7 @@
       "$className": "StarterPlayer",
       "StarterPlayerScripts": {
         "$className": "StarterPlayerScripts",
-        "RNGClient": {
-          "$path": "RNGClient.local.luau"
-        },
-        "MoneyDisplay": {
-          "$path": "MoneyDisplay.local.luau"
-        },
-        "EquipEffectsVisualizer": {
-          "$path": "EquipEffectsVisualizer.local.luau"
-        },
-        "UIHandler": {
-          "$path": "UIHandler.luau"
-        },
-        "EquipEffects": {
-          "$path": "EquipEffects.luau"
-        },
-        "RollEffects": {
-          "$path": "RollEffects.luau"
-        }
+        "$path": "StarterPlayerScripts"
       }
     }
   }
